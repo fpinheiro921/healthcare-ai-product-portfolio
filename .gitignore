@@ -191,3 +191,7 @@ Thumbs.db
 
 # Personal files
 QUICKSTART.md
+
+# Private PM OS / agent memory (may contain private career target)
+pm-workspace/
+.windsurf/
