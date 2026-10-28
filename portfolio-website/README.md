@@ -1,48 +1,32 @@
 # Portfolio Website
 
-A modern, premium portfolio website showcasing Francisco Pinheiro's AI healthcare products.
+Public site for Francisco Pinheiro’s **clinical workflow** case studies + working UIs.
 
-## 🌐 Live Site
-**[View Portfolio](https://portfolio-website-franciscos-projects-73f8717a.vercel.app)**
+## Live site
 
-## 🎯 Features
+[https://portfolio-website-franciscos-projects-73f8717a.vercel.app](https://portfolio-website-franciscos-projects-73f8717a.vercel.app)
 
-- **Hero Section**: Professional introduction highlighting MD + AI PM background
-- **Projects Grid**: Showcases all 3 healthcare AI MVPs with live links
-- **About Section**: Education, technical skills, and contact information
-- **Responsive Design**: Premium aesthetic with smooth animations
+## Focus case studies
 
-## 🛠️ Tech Stack
+1. HeartGuide AI — heart failure monitoring  
+2. BreathEasy AI — asthma/COPD environmental risk  
+3. GlucoWise AI — Type 2 diabetes (insulin) coaching  
+4. DocuFlow — clinical documentation  
 
-- **Framework**: React 19 + TypeScript
-- **Build Tool**: Vite 6
-- **Styling**: Tailwind CSS 3
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Deployment**: Vercel
+Additional experiments live on `/experiments` (not the homepage focus set).
 
-## 🚀 Featured Projects
+## Stack
 
-1. **[HeartGuide AI](https://heartguide-ai.vercel.app)** - Heart failure readmission prevention
-2. **[BreathEasy AI](https://breatheasy-ai.vercel.app)** - Smart asthma management
-3. **[GlucoWise AI](https://glucowise-ai.vercel.app)** - Intelligent glucose monitoring
+React 19, TypeScript, Vite 6, Tailwind CSS 3, Framer Motion, Vercel.
 
-## 📦 Local Development
+## Local
 
 ```bash
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
-
-# Build for production
 npm run build
-
-# Preview production build
-npm run preview
 ```
 
-## 📄 License
+## License
 
-MIT License - see the [LICENSE](../LICENSE) file for details.
+MIT — see [LICENSE](../LICENSE).

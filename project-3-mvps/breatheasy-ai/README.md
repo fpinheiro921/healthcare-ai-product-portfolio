@@ -1,71 +1,38 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
 # BreathEasy AI
 
-**Predictive Asthma Management & Environmental Risk Intelligence**
+**Case study + working UI** for asthma **and** COPD exacerbation risk with environmental triggers.
 
-BreathEasy AI is a forward-looking "Digital Pneumology" platform designed to align with Sword Health's ecosystem. It shifts asthma care from **Reactive** (using rescue inhalers) to **Predictive** (dodging triggers) by analyzing environmental data relative to patient sensitivity.
+> Metrics below are **targets / hypotheses**, not measured clinical outcomes.
 
-## 🚀 Live Demo
+## Working UI
 
-**Production**: [https://breatheasy-ai-demo.vercel.app](https://breatheasy-ai-demo.vercel.app)
+[https://breatheasy-ai.vercel.app/](https://breatheasy-ai.vercel.app/)
 
-## 📄 Clinical Documentation
-> **Medical Logic Verified**: Uses **Lagged Risk Modeling** (Day 0 Exposure -> Day 2 Risk) to predict inflammation latency, aligning with proactive management principles.
->
-> 👉 [**View Full Product Requirements (PRD)**](../../project-2-prd/BreathEasy-AI-PRD.md)
+## Clinical framing
 
-## ✨ Key Features
+Lagged exposure → inflammation risk modeling and deterministic AQI/trigger guardrails for clinician/patient workflows.
 
-### 1. **Lagged Risk Engine** ⭐ NEW
-- **The Problem**: High Ozone today causes attacks *tomorrow*. Standard apps miss this.
-- **The Solution**: A multi-day "Risk Horizon" algorithm that warns patients of delayed inflammatory effects.
+PRD: [BreathEasy-AI-PRD.md](../../project-2-prd/BreathEasy-AI-PRD.md)
 
-### 2. **Environmental Intelligence**
-- Real-time AQI, Pollen, and Weather data via Open-Meteo.
-- "Safe Run" planner for outdoor activities.
+## Highlights
 
-### 3. **Smart Trigger Guardrail**
-- **Safety First**: Deterministic checks for hazardous conditions (AQI > 150).
-- **Visual Feedback**: Simple "Traffic Light" system (Green/Yellow/Red) for action plans.
+- Environmental intelligence (AQI / pollen style signals)
+- Trigger safety guardrail with traffic-light UX
+- Vitest coverage for trigger safety logic
 
-## 🏗️ Architecture
-The **BreathEasy System** uses a Trigger Safety Guardrail to deterministic flag hazardous environmental conditions.
+## Stack
 
-```mermaid
-graph TD
-    Env[Open-Meteo API] --> SafetyGuard[🌬️ Trigger Safety]
-    SafetyGuard -- AQI > 150 --> Hazardous[☣️ Hazardous Alert]
-    SafetyGuard -- AQI < 50 --> Safe[✅ Optimal Conditions]
-    SafetyGuard --> UI[Patient Dashboard]
+React 19, TypeScript, Vite 6, Tailwind, Vitest. LLM via env-configured providers (OpenRouter planned).
+
+## Run
+
+```bash
+npm install
+npm run dev
+npm run build
+npm test
 ```
 
-## 🛠️ Tech Stack
+## License
 
-- **Frontend**: React 19 + TypeScript
-- **Build Tool**: Vite 6
-- **Styling**: Tailwind CSS
-- **API**: Open-Meteo (Weather/Air Quality)
-- **Deployment**: Vercel
-
-## 🏃 Run Locally
-
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-2. **Run the app**:
-   ```bash
-   npm run dev
-   ```
-
-## 📝 License
-
-MIT License - see the [LICENSE](../LICENSE) file for details.
-
----
-
-**Built by Francisco Pinheiro** | [LinkedIn](https://linkedin.com/in/fmmpinheiro)
+MIT — see [LICENSE](../../LICENSE).

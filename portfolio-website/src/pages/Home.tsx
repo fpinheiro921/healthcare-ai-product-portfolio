@@ -7,26 +7,8 @@ import {
     Github,
     Linkedin,
     Mail,
-    ExternalLink,
     ArrowRight,
     FileText,
-    Search,
-    Code as CodeIcon,
-    ShieldCheck,
-    ShieldAlert,
-    GitBranch,
-    Database,
-    Eye,
-    Monitor,
-    Mic,
-    Activity,
-    Truck,
-    Brain,
-    Microscope,
-    Baby,
-    Pill,
-    Leaf,
-    Target
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -37,7 +19,6 @@ import { architectureData } from '../data/architecture';
 import SafetyReportModal from '../components/SafetyReportModal';
 import { safetyReports } from '../data/safetyReports';
 import ProjectCard from '../components/ProjectCard';
-import SwordManifesto from '../components/SwordManifesto';
 
 function Home() {
     const [selectedArchitectureId, setSelectedArchitectureId] = React.useState<string | null>(null);
@@ -54,198 +35,55 @@ function Home() {
             url: '/heartguide-showcase',
             features: ['🛡️ Human-in-the-Loop', 'Neural Care Specialist', 'BP + Risk Triangulation'],
             strategy: {
-                problem: "Heart Failure has a 24% readmission rate due to delayed symptom detection.",
-                solution: "A Continuous Monitoring Agent that detects weight drift (+2lbs) 48h before hospitalization.",
-                kpi: "⇩ 30-Day Readmissions"
+                problem: "Heart Failure has a high unplanned readmission burden when symptom drift is detected late.",
+                solution: "A continuous monitoring workflow that surfaces weight/symptom drift for clinician review.",
+                kpi: "Target: lower 30-day readmissions (hypothesis)"
             }
         },
         {
             id: 'breatheasy',
             name: 'BreathEasy AI',
             tagline: 'Environmental Care Specialist',
-            description: 'Predictive agent that correlates AQI and clinical history to prevent asthma attacks before they happen.',
+            description: 'Predictive agent that correlates AQI and clinical history to prevent asthma/COPD exacerbations before they escalate.',
             icon: Wind,
             color: 'from-teal-500 to-cyan-600',
             url: '/breatheasy-showcase',
-            features: ['🛡️ Predictive Safety', 'Neural Care Specialist', 'Trigger Simulator'],
+            features: ['Predictive Safety', 'Trigger Simulator', 'Asthma + COPD'],
             strategy: {
-                problem: "Asthma attacks are reactive; patients don't know environmental triggers until it's too late.",
-                solution: "Correlate Real-Time Pollen/AQI data with patient history to issue 'Pre-Emptive Alerts'.",
-                kpi: "⇩ Emergency Dept Visits"
+                problem: "Respiratory exacerbations are often managed reactively after environmental exposure.",
+                solution: "Correlate pollen/AQI signals with patient history to issue pre-emptive alerts.",
+                kpi: "Target: fewer ED visits (hypothesis)"
             }
         },
         {
             id: 'glucowise',
             name: 'GlucoWise AI',
             tagline: 'Metabolic Care Specialist',
-            description: 'Real-time coaching agent using Computer Vision to predict glucose spikes and suggest interventions pre-meal.',
+            description: 'Coaching UI for Type 2 diabetes on insulin — meal impact estimation and pre-meal decision support.',
             icon: Droplet,
             color: 'from-blue-500 to-indigo-600',
             url: '/glucowise-showcase',
-            features: ['🛡️ Metabolic Physics', 'Neural Care Specialist', 'Glucose Prediction'],
+            features: ['Metabolic Physics', 'Glucose Prediction', 'Smart Bolus'],
             strategy: {
-                problem: "Diabetics struggle to estimate carb impact, leading to post-prandial spikes.",
-                solution: "Computer Vision estimation of Glycemic Load + Pre-Meal 'Smart Bolus' advice.",
-                kpi: "⇧ Time-in-Range (70-180)"
+                problem: "Insulin users struggle to estimate meal impact, driving post-prandial spikes.",
+                solution: "Meal load estimation plus pre-meal bolus decision support with safety checks.",
+                kpi: "Target: higher time-in-range (hypothesis)"
             }
         },
         {
             id: 'docuflow',
-            name: 'DocuFlow 2.0',
-            tagline: 'Privacy-First Agentic Scribe',
-            description: 'Offline-first clinical documentation engine. Uses fine-tuned SLMs to generate SOAP notes without patient data ever leaving the device.',
+            name: 'DocuFlow',
+            tagline: 'Clinical Documentation Workflow',
+            description: 'Case study + working UI for structured clinical notes with privacy-minded processing patterns.',
             icon: FileText,
             color: 'from-emerald-500 to-teal-600',
             url: '/docuflow-showcase',
-            features: ['Offline SLM Engine', 'Tool-Augmented', 'Zero-Data-Leak'],
+            features: ['SOAP Workflow', 'Clinician Review', 'Privacy-minded'],
             strategy: {
-                problem: "Cloud AI Scribes pose massive HIPAA/GDPR risks by sending PII to third-party servers.",
-                solution: "Local 350M Parameter Model with ToolBench architecture for 100% on-device processing.",
-                kpi: "0 Bytes Leaked"
+                problem: "Documentation burden and cloud PII exposure create clinician and compliance risk.",
+                solution: "Structured note workflows designed for local/controlled processing and human review.",
+                kpi: "Target: less documentation time (hypothesis)"
             }
-        }
-    ];
-
-    const innovationProjects = [
-        {
-            id: 'ecoward',
-            name: 'EcoWard Agent',
-            tagline: 'Hospital Sustainability Guardian',
-            description: 'Operational agent monitoring energy spikes and waste diversion in real-time to drive "Green Healthcare" goals.',
-            icon: Leaf,
-            color: 'from-emerald-500 to-teal-600',
-            url: 'https://ecoward-rkluioerx-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Carbon Tracker', 'Energy Monitor', 'Waste Analytics']
-        },
-        {
-            id: 'rxoptimize',
-            name: 'RxOptimize Agent',
-            tagline: 'Pharmacist Safety Guardian',
-            description: 'Back-office clinical agent that proactively scans medication regimens for dangerous interactions and safety risks.',
-            icon: Pill,
-            color: 'from-blue-600 to-indigo-700',
-            url: 'https://rxoptimize-7da082t62-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Interaction Scanner', 'Safety Agent', 'Deprescribing Engine']
-        },
-        {
-            id: 'gestalink',
-            name: 'GestaLink Agent',
-            tagline: 'Maternal Care Guardian',
-            description: 'Always-on safety agent for high-risk pregnancy. Monitors preeclampsia symptoms and provides instant, guideline-based triage.',
-            icon: Baby,
-            color: 'from-pink-500 to-rose-600',
-            url: 'https://gestalink-5do5snmmm-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Symptom Monitor', 'Safety Engine', 'Pregnancy Timeline']
-        },
-        {
-            id: 'patho-ai',
-            name: 'Patho-AI',
-            tagline: 'Oncology Staging Assistant',
-            description: 'Automated TNM staging calculator (AJCC 8th Ed). Deterministic logic engine matches tumor/node criteria to prognostic stages.',
-            icon: Microscope,
-            color: 'from-blue-500 to-sky-600',
-            url: 'https://patho-euwl94t84-franciscos-projects-73f8717a.vercel.app/',
-            features: ['TNM Calculator', 'Staging Engine', 'Treatment Guidelines']
-        },
-        {
-            id: 'mindbridge',
-            name: 'MindBridge AI',
-            tagline: 'Mental Health Triage',
-            description: 'Conversational assessment tool for depression (PHQ-9) and anxiety (GAD-7). Provides instant risk stratification and resource connection.',
-            icon: Brain,
-            color: 'from-teal-400 to-indigo-500',
-            url: 'https://mindbridge-i08yy9frn-franciscos-projects-73f8717a.vercel.app/',
-            features: ['PHQ-9 Scoring', 'Chat Interface', 'Resource Locator']
-        },
-        {
-            id: 'portersmart',
-            name: 'PorterSmart AI',
-            tagline: 'Logistics Optimization Engine',
-            description: 'Uber-like dispatch system for hospital porters. Uses TSP algorithms to optimize patient transport routes and reduce wait times.',
-            icon: Truck,
-            color: 'from-indigo-500 to-violet-600',
-            url: 'https://portersmart-jmujvdjju-franciscos-projects-73f8717a.vercel.app/',
-            features: ['TSP Optimization', 'Dispatch Dashboard', 'Real-Time Map']
-        },
-        {
-            id: 'cliniscript',
-            name: 'CliniScript',
-            tagline: 'Ambient Clinical Scribe',
-            description: 'Automated documentation engine that listens to doctor-patient conversations and generates SOAP notes in real-time.',
-            icon: Mic,
-            color: 'from-purple-500 to-purple-600',
-            url: 'https://cliniscript-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Ambient Listening', 'Real-Time Transcription', 'Auto-SOAP Generation']
-        },
-        {
-            id: 'sentinel',
-            name: 'Sentinel AI',
-            tagline: 'Computer Vision Safety Guard',
-            description: 'Always-on "Digital Eye" for waiting rooms. Detects patient distress (slumping, agitation) via pose estimation to prevent silent collapse.',
-            icon: Eye,
-            color: 'from-emerald-500 to-teal-700',
-            url: 'https://sentinel-es85ln6nf-franciscos-projects-73f8717a.vercel.app/',
-        },
-        {
-            id: 'fasttrack',
-            name: 'FastTrack AI',
-            tagline: 'Self-Service ED Kiosk',
-            description: 'Touch-friendly patient check-in terminal. Offloads non-urgent triage from front-desk staff via "Big Button" UI and simulated ID scanning.',
-            icon: Monitor,
-            color: 'from-blue-500 to-indigo-700',
-            url: 'https://fasttrack-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Touch Interface', 'ID Scan Sim', 'Ticket Printing']
-        },
-        {
-            id: 'triage-os',
-            name: 'HealthLine AI',
-            tagline: 'National AI Symptom Triage',
-            description: 'A "No-Black-Box" clinical front-door simulator. Uses deterministic ESI protocols to safely route patients.',
-            icon: ShieldCheck,
-            color: 'from-blue-600 to-cyan-500',
-            url: 'https://triage-cu5f7vyw9-franciscos-projects-73f8717a.vercel.app/',
-            features: ['ESI Scoring Engine', 'Red-Flag Safety', 'Protocol Logic']
-        },
-        {
-            id: 'surge-commander',
-            name: 'National Health OS',
-            tagline: 'National Capacity Simulator',
-            description: 'Command center simulating national health capacity during surges. Moving from hospital-level to network-level orchestration.',
-            icon: ShieldAlert,
-            color: 'from-amber-500 to-orange-600',
-            url: 'https://surge-commander-8ne3vdhp2-franciscos-projects-73f8717a.vercel.app/',
-            features: ['National Simulation', 'Network Capacity', 'Collapse Prediction']
-        },
-        {
-            id: 'careflow-architect',
-            name: 'CareFlow Architect',
-            tagline: 'Visual Protocol Builder',
-            description: 'Interactive education platform for training residents on clinical decision logic and protocol adherence.',
-            icon: GitBranch,
-            color: 'from-violet-500 to-fuchsia-600',
-            url: 'https://careflow-architect-7uj5t9doq-franciscos-projects-73f8717a.vercel.app/',
-            features: ['React Flow Engine', 'Visual Programming', 'JSON Protocol Export']
-        },
-
-        {
-            id: 'sepsis-sentinel',
-            name: 'SepsisSentinel',
-            tagline: 'Ward Risk Monitor',
-            description: 'Real-time patient safety dashboard. Automates NEWS2 scoring and alerts clinicians to early signs of deterioration.',
-            icon: ShieldAlert,
-            color: 'from-red-500 to-orange-600',
-            url: 'https://sepsis-sentinel-franciscos-projects-73f8717a.vercel.app/',
-            features: ['NEWS2 Scoring', 'Clinical Drift Sim', 'Safety Alerts']
-        },
-        {
-            id: 'flowmaster',
-            name: 'FlowMaster',
-            tagline: 'Discharge Predictor',
-            description: 'AI-driven patient flow optimization. Predicts discharge dates and identifies operational bottlenecks like "Awaiting Rehab".',
-            icon: Activity,
-            color: 'from-blue-500 to-indigo-500',
-            url: 'https://flowmaster-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Discharge Prediction', 'Bottleneck Detection', 'LOS Analytics']
         }
     ];
 
@@ -272,8 +110,8 @@ function Home() {
                         </h1>
 
                         <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
-                            Building AI to save lives, not just time. <br />
-                            <span className="text-teal-600 dark:text-teal-400">MD + Engineer</span> obsessed with solving the visceral problems in healthcare.
+                            Clinical workflow prototypes for health systems. <br />
+                            <span className="text-teal-600 dark:text-teal-400">MD + Biomedical Engineer</span> building case studies with working UIs.
                         </p>
 
                         <div className="flex flex-wrap justify-center gap-4">
@@ -281,18 +119,14 @@ function Home() {
                                 href="#flagship"
                                 className="group inline-flex items-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-teal-700 transition-all shadow-lg shadow-teal-600/30 hover:shadow-xl hover:shadow-teal-600/40"
                             >
-                                View Flagship Products
+                                View case studies
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </a>
                             <Link
-                                to="/sns-simulator"
-                                className="relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg shadow-blue-600/30 ring-2 ring-white/20"
+                                to="/experiments"
+                                className="inline-flex items-center gap-2 glass-card text-slate-700 dark:text-slate-200 px-8 py-4 rounded-xl font-semibold hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all"
                             >
-                                <Activity className="w-5 h-5" />
-                                Explore Patient Journeys
-                                <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-slate-900 rounded-full shadow-lg">
-                                    Beta
-                                </span>
+                                Additional experiments
                             </Link>
                             <a
                                 href="https://linkedin.com/in/fmmpinheiro"
@@ -308,14 +142,8 @@ function Home() {
                 </div>
             </section>
 
-            {/* Sword Manifesto Section */}
-            <SwordManifesto />
-
-            {/* Featured Build: Candidate OS */}
-
-
-            {/* Flagship Projects Section */}
-            < section id="flagship" className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300 print:hidden" >
+            {/* Focus case studies */}
+            <section id="flagship" className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300 print:hidden">
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -325,21 +153,17 @@ function Home() {
                         className="text-center mb-16"
                     >
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 font-bold text-sm tracking-wide uppercase mb-6">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
-                            </span>
-                            Core Expertise
+                            Focus
                         </div>
                         <h2 className="font-display text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-                            Flagship AI Solutions
+                            Case studies + working UIs
                         </h2>
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                            My three primary product visions: tackling cardiovascular risk, respiratory health, and metabolic disease with predictive intelligence.
+                            Four primary prototypes: heart failure, asthma/COPD, Type 2 diabetes on insulin, and clinical documentation. Outcome metrics are targets/hypotheses, not measured results.
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-3 gap-8 mb-24">
+                    <div className="grid md:grid-cols-2 gap-8 mb-16">
                         {flagshipProjects.map((project, index) => (
                             <ProjectCard
                                 key={project.id}
@@ -374,103 +198,29 @@ function Home() {
                         />
                     )
                 }
-            </section >
+            </section>
 
-            {/* Innovation Lab Projects Section */}
-            < section id="innovation" className="py-24 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 print:hidden border-t border-slate-200 dark:border-slate-800" >
-                <div className="max-w-7xl mx-auto px-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6"
+            {/* Experiments teaser (full list on secondary page) */}
+            <section id="experiments-teaser" className="py-20 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 print:hidden border-t border-slate-200 dark:border-slate-800">
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <h2 className="font-display text-3xl font-bold text-slate-900 dark:text-white mb-3">
+                        Additional experiments
+                    </h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-8">
+                        Smaller working-UI prototypes for triage, capacity, logistics, and related clinical workflows — kept off the homepage focus set.
+                    </p>
+                    <Link
+                        to="/experiments"
+                        className="inline-flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-xl font-semibold hover:opacity-90 transition-all"
                     >
-                        <div className="text-left">
-                            <h2 className="font-display text-3xl font-bold text-slate-900 dark:text-white mb-2">
-                                Innovation Lab & MVPs
-                            </h2>
-                            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
-                                Rapid prototypes demonstrating specific technical capabilities, from Computer Vision to Agentic AI and System Dynamics.
-                            </p>
-                        </div>
-                        <div className="hidden md:block h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-8 rounded-full"></div>
-                    </motion.div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {innovationProjects.map((project, index) => {
-                            const Icon = project.icon;
-                            return (
-                                <motion.div
-                                    key={project.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                                    className="group relative glass-card overflow-hidden hover:scale-[1.02] hover:shadow-lg transition-all duration-300 bg-white dark:bg-slate-950"
-                                >
-                                    {/* Compact Header */}
-                                    <div className={`h-24 bg-gradient-to-br ${project.color} relative overflow-hidden`}>
-                                        <div className="absolute inset-0 bg-black/10"></div>
-                                        <div className="absolute -bottom-4 -right-4 bg-white/10 p-4 rounded-full">
-                                            <Icon className="w-16 h-16 text-white opacity-20" />
-                                        </div>
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className="p-5">
-                                        <div className="flex items-start justify-between mb-2">
-                                            <h3 className="font-display text-lg font-bold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors line-clamp-1">
-                                                {project.name}
-                                            </h3>
-                                            <Icon className="w-5 h-5 text-slate-400" />
-                                        </div>
-
-                                        <p className="text-xs font-semibold text-teal-600 dark:text-teal-400 mb-2 uppercase line-clamp-1">
-                                            {project.tagline}
-                                        </p>
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-3 leading-relaxed">
-                                            {project.description}
-                                        </p>
-
-                                        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 mt-auto">
-                                            <a
-                                                href={project.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 flex items-center gap-1 transition-colors"
-                                            >
-                                                Launch <ExternalLink className="w-3 h-3" />
-                                            </a>
-                                            <button
-                                                onClick={() => setSelectedArchitectureId(project.id)}
-                                                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                                                title="View Design"
-                                            >
-                                                <CodeIcon className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
-                    </div>
+                        Browse experiments
+                        <ArrowRight className="w-5 h-5" />
+                    </Link>
                 </div>
-
-                {/* Architecture Modal */}
-                {
-                    selectedArchitectureId && (
-                        <ArchitectureModal
-                            isOpen={!!selectedArchitectureId}
-                            onClose={() => setSelectedArchitectureId(null)}
-                            data={architectureData[selectedArchitectureId]}
-                        />
-                    )
-                }
-            </section >
+            </section>
 
             {/* Product Thinking Section */}
-            < section id="thinking" className="py-24 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 print:hidden" >
+            <section id="thinking" className="py-24 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 print:hidden">
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -487,37 +237,7 @@ function Home() {
                         </p>
                     </motion.div>
 
-                    {/* Unified Grid: 3 Columns for 6 Items */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                        {/* Featured Insight: SNS Transformation */}
-                        <Link
-                            to="/sns-transformation"
-                            className="glass-card p-8 group md:col-span-2 lg:col-span-3 bg-gradient-to-br from-white to-teal-50 dark:from-slate-900 dark:to-teal-900/20 border-teal-200 dark:border-teal-800"
-                        >
-                            <div className="flex flex-col md:flex-row items-center gap-8">
-                                <div className="bg-teal-100 dark:bg-teal-900/50 p-6 rounded-2xl group-hover:scale-105 transition-transform">
-                                    <Database className="w-12 h-12 text-teal-600 dark:text-teal-400" />
-                                </div>
-                                <div className="text-center md:text-left flex-1">
-                                    <div className="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold text-sm uppercase tracking-wide mb-2">
-                                        <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-                                        Strategic Blueprint 2025
-                                    </div>
-                                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition-colors">
-                                        Re-Engineering the Portuguese SNS
-                                    </h3>
-                                    <p className="text-slate-600 dark:text-slate-400 text-lg mb-4 max-w-2xl">
-                                        A tactical roadmap for the Ministry of Health: Moving from a saturated, reactive model to a sustainable "Bionic Health System" through Algorithmic Optimization.
-                                    </p>
-                                    <div className="flex items-center justify-center md:justify-start gap-2 text-teal-700 dark:text-teal-400 font-bold">
-                                        Read the Manifesto <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
-
-                        {/* PRDs */}
                         <Link
                             to="/documents/heartguide-prd"
                             className="glass-card p-8 group"
@@ -576,10 +296,10 @@ function Home() {
 
                     </div>
                 </div>
-            </section >
+            </section>
 
             {/* About Section */}
-            < section id="about" className="py-24 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 transition-colors duration-300 print:bg-white print:py-0" >
+            <section id="about" className="py-24 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 transition-colors duration-300 print:bg-white print:py-0">
                 <div className="max-w-6xl mx-auto px-6 print:px-0 print:max-w-none">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -752,20 +472,20 @@ function Home() {
                         </div>
                     </motion.div>
                 </div>
-            </section >
+            </section>
 
             {/* Footer */}
-            < footer className="bg-slate-900 text-white py-12 print:hidden" >
+            <footer className="bg-slate-900 text-white py-12 print:hidden">
                 <div className="max-w-7xl mx-auto px-6 text-center">
                     <p className="text-slate-400 mb-4">
                         © 2025 Francisco Pinheiro. Built with React, TypeScript, and Tailwind CSS.
                     </p>
                     <p className="text-slate-500 text-sm italic">
-                        "The future of healthcare is at the intersection of clinical expertise and artificial intelligence."
+                        Clinical workflow prototypes for health systems — case studies with working UIs.
                     </p>
                 </div>
-            </footer >
-        </div >
+            </footer>
+        </div>
     );
 }
 

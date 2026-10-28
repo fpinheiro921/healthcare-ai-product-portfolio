@@ -23,6 +23,7 @@ const GlucoWiseShowcase = React.lazy(() => import('./pages/GlucoWiseShowcase'));
 const HeartGuideLive = React.lazy(() => import('./pages/HeartGuideLive'));
 const BreathEasyLive = React.lazy(() => import('./pages/BreathEasyLive'));
 const GlucoWiseLive = React.lazy(() => import('./pages/GlucoWiseLive'));
+const Experiments = React.lazy(() => import('./pages/Experiments'));
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                 <Suspense fallback={<Loading />}>
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/experiments" element={<Experiments />} />
                         <Route path="/sns-transformation" element={<SNSTransformation />} />
                         <Route path="/sns-simulator" element={<SNSSimulator />} />
                         <Route path="/docuflow-showcase" element={<DocuFlowShowcase />} />

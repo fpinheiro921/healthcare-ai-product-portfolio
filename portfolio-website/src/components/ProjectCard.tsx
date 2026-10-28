@@ -125,7 +125,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                         to={project.url}
                                         className="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-slate-900/20 dark:hover:shadow-white/20 transition-all duration-200 shadow-lg active:scale-95"
                                     >
-                                        View Showcase
+                                        Case study + UI
                                         <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 ) : (
@@ -135,7 +135,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                         rel="noopener noreferrer"
                                         className="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-slate-900/20 dark:hover:shadow-white/20 transition-all duration-200 shadow-lg active:scale-95"
                                     >
-                                        Launch App
+                                        Working UI
                                         <ExternalLink className="w-4 h-4" />
                                     </a>
                                 )}
