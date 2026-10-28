@@ -20,21 +20,21 @@ export const documents: Record<string, Document> = {
         title: 'HeartGuide AI PRD',
         type: 'PRD',
         content: heartGuidePrd,
-        originalUrl: 'https://github.com/fpinheiropt/healthcare-ai-product-portfolio/blob/master/project-2-prd/HeartGuide-AI-PRD.md'
+        originalUrl: 'https://github.com/fpinheiro921/healthcare-ai-product-portfolio/blob/master/project-2-prd/HeartGuide-AI-PRD.md'
     },
     'breatheasy-prd': {
         id: 'breatheasy-prd',
         title: 'BreathEasy AI PRD',
         type: 'PRD',
         content: breathEasyPrd,
-        originalUrl: 'https://github.com/fpinheiropt/healthcare-ai-product-portfolio/blob/master/project-2-prd/BreathEasy-AI-PRD.md'
+        originalUrl: 'https://github.com/fpinheiro921/healthcare-ai-product-portfolio/blob/master/project-2-prd/BreathEasy-AI-PRD.md'
     },
     'glucowise-prd': {
         id: 'glucowise-prd',
         title: 'GlucoWise AI PRD',
         type: 'PRD',
         content: glucoWisePrd,
-        originalUrl: 'https://github.com/fpinheiropt/healthcare-ai-product-portfolio/blob/master/project-2-prd/GlucoWise-AI-PRD.md'
+        originalUrl: 'https://github.com/fpinheiro921/healthcare-ai-product-portfolio/blob/master/project-2-prd/GlucoWise-AI-PRD.md'
     },
     'sword-teardown': {
         id: 'sword-teardown',

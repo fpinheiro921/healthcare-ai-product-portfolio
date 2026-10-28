@@ -233,11 +233,11 @@ function Home() {
                             Product Thinking
                         </h2>
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                            Deep dives into market analysis, product strategy, and requirements definition.
+                            Problem-first PRDs for the four focus case studies — clinical workflow requirements, not marketing claims.
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         <Link
                             to="/documents/heartguide-prd"
                             className="glass-card p-8 group"
@@ -249,10 +249,10 @@ function Home() {
                                 HeartGuide PRD
                             </h3>
                             <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                Requirements for AI-powered heart failure readmission prevention.
+                                Heart-failure remote monitoring and readmission-risk workflow requirements.
                             </p>
                             <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm">
-                                Read Document <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                Read PRD <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </div>
                         </Link>
 
@@ -267,10 +267,10 @@ function Home() {
                                 BreathEasy PRD
                             </h3>
                             <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                Specs for smart asthma management with environmental trigger prediction.
+                                Asthma and COPD environmental-trigger risk and exacerbation-prevention requirements.
                             </p>
                             <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold text-sm">
-                                Read Document <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                Read PRD <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </div>
                         </Link>
 
@@ -285,15 +285,30 @@ function Home() {
                                 GlucoWise PRD
                             </h3>
                             <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                Specs for AI-driven diabetes coaching and lifestyle management.
+                                Type 2 diabetes on insulin — meal impact estimation and glucose-coaching requirements.
                             </p>
                             <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
-                                Read Document <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                Read PRD <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </div>
                         </Link>
 
-
-
+                        <Link
+                            to="/docuflow-showcase"
+                            className="glass-card p-8 group"
+                        >
+                            <div className="bg-emerald-50 dark:bg-emerald-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/50 transition-colors">
+                                <FileText className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+                            </div>
+                            <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                DocuFlow Case Study
+                            </h3>
+                            <p className="text-slate-600 dark:text-slate-400 mb-4">
+                                Clinical documentation workflow — structured notes with clinician review (case study + UI).
+                            </p>
+                            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-sm">
+                                View case study <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -323,16 +338,16 @@ function Home() {
                         {/* Print Header (Only visible when printing) */}
                         <div className="hidden print:block mb-8 border-b-2 border-slate-900 pb-4">
                             <h1 className="text-3xl font-bold text-slate-900">Francisco Pinheiro</h1>
-                            <p className="text-lg text-slate-600">MD • Biomedical Engineer • AI Product Manager</p>
+                            <p className="text-lg text-slate-600">MD • Biomedical Engineer • Clinical workflow prototypes</p>
                             <div className="flex gap-4 mt-2 text-sm text-slate-500">
                                 <span>fpinheiro921@gmail.com</span>
                                 <span>linkedin.com/in/fmmpinheiro</span>
-                                <span>github.com/fpinheiropt</span>
+                                <span>github.com/fpinheiro921</span>
                             </div>
                         </div>
 
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-16 text-center print:text-left print:mb-8 print:text-base print:max-w-none print:text-slate-900">
-                            Bridging clinical medicine, AI/ML engineering, and product thinking to build solutions that truly address healthcare challenges.
+                            Bridging clinical medicine and product thinking to design health-system clinical workflows — case studies with working UIs.
                         </p>
 
                         {/* Work Experience Timeline */}
