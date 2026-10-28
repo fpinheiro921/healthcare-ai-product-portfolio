@@ -130,16 +130,15 @@ const DocuFlowShowcase = () => {
                     </motion.div>
 
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-                        The Scribe that <br />
+                        Documentation that <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
-                            Never Leaks Data
+                            Stays Under Control
                         </span>
                     </h1>
 
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Standard AI Scribes send patient conversations to the cloud. <br />
-                        <span className="text-white">DocuFlow</span> runs a fine-tuned <strong>350M SLM</strong> directly on the device,
-                        using local tools to Code and Prescribe without a single packet leaving the room.
+                        Cloud scribes raise privacy and workflow questions. <br />
+                        <span className="text-white">DocuFlow</span> is a <strong>case study + working UI</strong> for privacy-minded clinical documentation with clinician review in the loop.
                     </p>
 
                     <div className="flex justify-center">
@@ -148,7 +147,7 @@ const DocuFlowShowcase = () => {
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all border-2 border-emerald-500 text-emerald-400 hover:bg-emerald-500 hover:text-white hover:scale-105 active:scale-95"
                         >
                             <ArrowRight className="w-5 h-5" />
-                            Launch Full App
+                            Open working UI
                         </Link>
                     </div>
                 </div>

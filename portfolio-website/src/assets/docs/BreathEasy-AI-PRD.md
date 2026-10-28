@@ -66,37 +66,37 @@ Standard apps correlate *current* AQI with *current* symptoms. BreathEasy uses a
 
 ---
 
-## 6. Sword Ecosystem Fit: "Digital Pneumology"
+## 6. Health-System Workflow Fit
 
-BreathEasy is designed to be Sword Health's **fourth vertical**, sitting alongside MSK (Move), Pelvic (Bloom), and Mental (Mind).
+BreathEasy is framed as a **clinical workflow prototype** for respiratory risk between visits — useful in telehealth / chronic-care journey contexts (asthma **and** COPD).
 
-| Feature | Sword MSK (Move) | Sword Respiratory (BreathEasy) |
-| :--- | :--- | :--- |
-| **Sensor** | IMU (Motion) | Spirometer + Air Monitor |
-| **Logic** | Biomechanical Correction | Environmental Prediction |
-| **Model** | "Fix the movement" | "Dodge the trigger" |
-| **value** | Avoid Surgery ($$) | Avoid ER Visits ($$$) |
+| Dimension | Approach |
+| :--- | :--- |
+| **Signals** | PEF / symptoms + environmental context (AQI, pollen) |
+| **Logic** | Lagged trigger risk + deterministic safety guardrails |
+| **Model** | “Dodge the trigger” before escalation |
+| **Value (hypothesis)** | Fewer preventable ED visits / exacerbations |
 
-## 6. User Experience (UX)
+## 7. User Experience (UX)
 - **"Traffic Light" System**: Immediate visual feedback after every log.
     - 🟢 **Green**: "All good. Maintain therapy."
     - 🟡 **Yellow**: "Caution. Take rescue inhaler."
     - 🔴 **Red**: "Medical Alert. Call doctor."
 
-## 7. Success Metrics
-- **Primary KPI**: Reduction in "Yellow/Red Zone" days per patient.
-- **Secondary KPIs**:
-    - App retention (Day 30).
-    - Correlation accuracy (AI Trigger Identification).
+## 8. Success Metrics *(targets / hypotheses)*
+- **Primary (target)**: Fewer "Yellow/Red Zone" days per patient in a future pilot.
+- **Secondary (targets)**:
+    - Useful adherence to PEF / symptom logging.
+    - Clinician-trusted trigger explanations (qualitative).
 
-## 8. Risks & Mitigations
+## 9. Risks & Mitigations
 | Risk | Impact | Likelihood | Mitigation Strategy |
 |------|--------|------------|---------------------|
 | **Inaccurate Environmental Data** | Medium | Medium | Use multiple data providers and average the values. |
 | **Patient Anxiety** | High | Low | Ensure "Red Zone" messaging is calm and directive, not alarming. |
 | **Device Calibration** | Medium | High | Support manual entry from standard mechanical peak flow meters (cheaper, reliable). |
 
-## 9. Roadmap
+## 10. Roadmap
 - **Phase 1 (MVP)**: Manual logging + Weather API. (Completed)
 - **Phase 2**: Smart Inhaler integration (Bluetooth sensors).
 - **Phase 3**: Telehealth integration for immediate "Red Zone" consults.

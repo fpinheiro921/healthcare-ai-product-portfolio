@@ -58,4 +58,4 @@ Don't just remind me to take pills. **Optimize my schedule.**
 ### Why This Wins
 1.  **Clinical Outcomes**: Chronotherapy is a proven but underutilized intervention.
 2.  **Stickiness**: Hello Heart becomes an essential partner in the treatment plan, not just a logger.
-3.  **Portfolio Synergy**: This concept mirrors the "Predictive Behavioral" logic in my **Sword Health** teardown and the risk modeling in **HeartGuide AI**.
+3.  **Portfolio Synergy**: This concept mirrors predictive behavioral patterns discussed in digital-health teardowns and the risk modeling in **HeartGuide AI**.

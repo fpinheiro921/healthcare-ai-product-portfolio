@@ -14,7 +14,7 @@ const MOCK_PATIENTS: Patient[] = [
     readings: Array.from({ length: 10 }, (_, i) => ({ id: `r${i}`, value: 140 + Math.random() * 80, timestamp: new Date().toISOString(), context: 'Fasting' } as any))
   },
   {
-    id: 'p3', name: 'Emily Davis', age: 38, type: 'Type 1', latestA1C: 9.4, lastVisit: '2023-10-01', riskLevel: RiskLevel.HIGH, timeInRange: 40,
+    id: 'p3', name: 'Emily Davis', age: 38, type: 'Type 2 (insulin)', latestA1C: 9.4, lastVisit: '2023-10-01', riskLevel: RiskLevel.HIGH, timeInRange: 40,
     readings: Array.from({ length: 10 }, (_, i) => ({ id: `r${i}`, value: 60 + Math.random() * 250, timestamp: new Date().toISOString(), context: 'Fasting' } as any))
   },
 ];

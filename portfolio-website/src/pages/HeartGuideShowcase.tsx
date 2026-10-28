@@ -133,8 +133,8 @@ const HeartGuideShowcase = () => {
                     </h1>
 
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Without monitoring, patients often ignore subtle weight gains until they can't breathe. <br />
-                        <span className="text-white">HeartGuide AI</span> catches the <strong>decompensation</strong> pattern days before the 911 call becomes necessary.
+                        Without monitoring, subtle weight gains are easy to miss until symptoms escalate. <br />
+                        <span className="text-white">HeartGuide AI</span> is a <strong>case study + working UI</strong> for spotting decompensation-risk patterns earlier for clinician review.
                     </p>
 
                     <div className="flex justify-center">
@@ -145,7 +145,7 @@ const HeartGuideShowcase = () => {
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all border-2 border-rose-500 text-rose-400 hover:bg-rose-500 hover:text-white hover:scale-105 active:scale-95"
                         >
                             <ArrowRight className="w-5 h-5" />
-                            Launch Full App
+                            Open working UI
                         </a>
                     </div>
 

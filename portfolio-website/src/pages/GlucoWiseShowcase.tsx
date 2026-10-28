@@ -133,7 +133,7 @@ const GlucoWiseShowcase = () => {
                     </h1>
 
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Complex meals like Pizza are notorious for causing delayed spikes that manual math can't predict. <span className="text-white">GlucoWise AI</span> sees the outcome hours in advance, preventing the emergency.
+                        Complex meals can drive delayed glucose swings that simple carb math misses. <span className="text-white">GlucoWise AI</span> is a <strong>case study + working UI</strong> for Type 2 diabetes on insulin — meal impact and pre-meal decision support.
                     </p>
 
                     <div className="flex justify-center">
@@ -144,7 +144,7 @@ const GlucoWiseShowcase = () => {
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all border-2 border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white hover:scale-105 active:scale-95"
                         >
                             <ArrowRight className="w-5 h-5" />
-                            Launch Full App
+                            Open working UI
                         </a>
                     </div>
 

@@ -124,7 +124,7 @@ const BreathEasyShowcase = () => {
                     </h1>
 
                     <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Asthma triggers like Ozone and Pollen are invisible. Without data, a run on a "sunny day" can end in the ER. <span className="text-white">BreathEasy AI</span> predicts the risk zone before you step outside.
+                        Asthma and COPD triggers like ozone and pollen are easy to miss. <span className="text-white">BreathEasy AI</span> is a <strong>case study + working UI</strong> for environmental risk awareness before outdoor exposure escalates.
                     </p>
 
                     <div className="flex justify-center">
@@ -135,7 +135,7 @@ const BreathEasyShowcase = () => {
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white hover:scale-105 active:scale-95"
                         >
                             <ArrowRight className="w-5 h-5" />
-                            Launch Full App
+                            Open working UI
                         </a>
                     </div>
 
