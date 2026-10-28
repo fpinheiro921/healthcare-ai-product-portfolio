@@ -9,28 +9,29 @@
 
 ## 1. Executive Summary
 
-**GlucoWise AI** is an intelligent coaching platform designed to help patients with Type 2 Diabetes (T2D) understand the relationship between their lifestyle choices and glucose levels. Unlike traditional logbooks that just record data, GlucoWise uses AI to identify patterns (e.g., "Your glucose spikes 2 hours after eating pasta") and provides personalized, actionable recommendations to improve glycemic control.
+**GlucoWise AI** is a clinical-workflow case study + working UI for **Type 2 diabetes on insulin** — helping patients and clinicians connect meals, glucose response, and bolus decision support. Scope is **not Type 1 diabetes**. This PRD defines prototype requirements; outcome metrics below are **targets / hypotheses**, not measured results.
 
 ### The Problem
 - **Data Overload**: Patients generate hundreds of glucose data points but lack the expertise to interpret them.
-- **Generic Advice**: "Eat better" is too vague. Patients need specific feedback based on their unique metabolic response.
+- **Generic Advice**: "Eat better" is too vague — insulin users need meal-specific decision support.
 - **High Friction**: Manual logging is tedious and leads to abandonment.
+- **Safety**: Bolus suggestions must sit behind deterministic checks and clinician-safe framing.
 
 ### The Solution
-A "smart" diabetes companion that:
-1.  **Simplifies Logging**: Uses computer vision (simulated) to log meals via photos.
-2.  **Connects the Dots**: Correlates specific foods with glucose excursions.
-3.  **Nudges Behavior**: Suggests specific food swaps to flatten glucose curves.
+A diabetes companion workflow that:
+1.  **Simplifies Logging**: Meal capture (including photo-assisted estimation in the UI).
+2.  **Connects the Dots**: Relates foods to likely glucose excursions.
+3.  **Supports Decisions**: Pre-meal coaching / smart-bolus style guidance with safety guardrails for human review.
 
 ---
 
 ## 2. User Personas
 
-### Primary Persona: "David" (The Newly Diagnosed)
-- **Profile**: 55-year-old accountant, recently diagnosed with T2D.
-- **Pain Point**: Overwhelmed by dietary restrictions. Doesn't know which foods spike his sugar.
-- **Goal**: Lower HbA1c below 7.0% without giving up all his favorite foods.
-- **Quote**: *"My doctor said 'watch your carbs,' but I don't know if that means no bread or just less bread."*
+### Primary Persona: "David" (Type 2 on insulin)
+- **Profile**: 55-year-old accountant with Type 2 diabetes, newly started on insulin.
+- **Pain Point**: Unsure how meals map to bolus decisions; fears hypo/hyper swings.
+- **Goal (target)**: Improve time-in-range / HbA1c without abandoning all favorite foods.
+- **Quote**: *"My doctor said 'watch your carbs,' but I don't know how that changes my dose before dinner."*
 
 ### Secondary Persona: "Dr. Lee" (The Endocrinologist)
 - **Profile**: Busy specialist with 15-minute appointment slots.

@@ -7,22 +7,22 @@
 - **Status**: Draft
 
 ## 1. Executive Summary
-Asthma affects over 260 million people globally, yet management remains largely reactive. **BreathEasy AI** is a smart asthma management platform that shifts care from reactive to proactive. By correlating patient-reported outcomes (Peak Flow, Symptoms) with real-time environmental data (AQI, Pollen, Weather), BreathEasy AI predicts exacerbation risks and enables timely interventions.
+Asthma and COPD care is often reactive — patients act after symptoms escalate. **BreathEasy AI** is a clinical-workflow case study + working UI that correlates patient-reported outcomes (e.g., PEF, symptoms) with environmental signals (AQI, pollen, weather) to surface exacerbation risk earlier for patient action and clinician review. Scope always includes **asthma and COPD**. This is a prototype framing document — **not** measured outcome claims.
 
 ## 2. Product Overview
-- **Vision**: To empower asthma patients to breathe freely by predicting and preventing flare-ups before they happen.
+- **Framing**: Case study + working UI for respiratory trigger-aware clinical workflows.
 - **Target Users**:
-    - **Patients**: Moderate-to-severe asthma patients who need daily monitoring.
-    - **Providers**: Pulmonologists and Allergists seeking objective data for treatment adjustment.
+    - **Patients**: Moderate-to-severe asthma and/or COPD patients who need daily monitoring.
+    - **Providers**: Pulmonologists and care teams seeking objective between-visit context.
 - **Key Differentiators**:
-    - **Environmental Context**: Unlike standard loggers, we overlay symptom data with local air quality and pollen levels.
-    - **Predictive Alerts**: "High Risk Day" notifications based on forecasted triggers.
+    - **Environmental Context**: Overlay symptom/PEF data with local air quality and pollen levels.
+    - **Predictive Alerts**: "Higher-risk day" style notifications based on forecasted triggers (hypothesis).
     - **Simple UI**: Designed for quick (<30s) daily check-ins.
 
-## 3. Business Objectives
-- **Clinical Outcome**: Reduce annualized asthma exacerbation rate by 30% in pilot population.
-- **Engagement**: Achieve >70% daily adherence to Peak Flow logging.
-- **Monetization**: B2B2C model (Health Plans & Employers) focused on reducing ER utilization costs.
+## 3. Business Objectives *(targets / hypotheses — not validated results)*
+- **Clinical Outcome (target)**: Fewer exacerbations / ED visits in a future pilot population.
+- **Engagement (target)**: Strong daily adherence to PEF / symptom logging.
+- **Go-to-market (hypothesis)**: B2B2C via health systems / plans focused on total cost of care.
 
 ## 4. User Stories & Requirements
 

@@ -7,22 +7,22 @@
 - **Status**: Draft
 
 ## 1. Executive Summary
-Heart Failure (HF) is a leading cause of hospital readmissions, with ~25% of patients readmitted within 30 days of discharge. **HeartGuide AI** is a remote patient monitoring (RPM) and clinical decision support system designed to reduce these readmissions. By combining a patient-facing mobile app for daily vitals/symptom tracking with a provider-facing AI dashboard, HeartGuide AI enables early detection of decompensation, allowing care teams to intervene *before* hospitalization is required.
+Heart Failure (HF) remains a major driver of unplanned hospital returns after discharge. **HeartGuide AI** is a clinical-workflow case study + working UI for remote patient monitoring (RPM): patients log vitals/symptoms; clinicians see prioritized risk for earlier review. This document defines product requirements for a health-system workflow prototype — **not** a cleared medical device, and **not** measured outcome claims.
 
 ## 2. Product Overview
-- **Vision**: To become the standard of care for post-discharge heart failure management, bridging the gap between hospital and home.
+- **Framing**: Case study + working UI for post-discharge HF clinical workflows (home ↔ care team).
 - **Target Users**:
     - **Patients**: Post-discharge HF patients (NYHA Class II-III), typically 65+ years old.
     - **Providers**: Cardiologists, HF Nurse Navigators, and Case Managers.
 - **Key Differentiators**:
-    - **AI-Driven Risk Stratification**: Dynamic risk scoring based on real-time data, not just static EMR history.
+    - **Risk stratification workflow**: Dynamic scoring from recent patient-generated data, with clinician oversight.
     - **User-Centric Design**: Simplified interface for elderly patients (big buttons, voice logging).
-    - **Actionable Insights**: "Smart Alerts" that suggest specific interventions (e.g., "Increase diuretic dosage").
+    - **Actionable Insights**: Alerts that surface possible interventions for **human review** (e.g., diuretic titration discussion) — never autonomous prescribing.
 
-## 3. Business Objectives
-- **Clinical Outcome**: Reduce 30-day HF readmission rate by 20% within 6 months of pilot.
-- **Engagement**: Achieve 80% daily adherence to weight and symptom logging among active patients.
-- **Operational**: Reduce nursing time spent on "false alarm" calls by 40% through AI filtering.
+## 3. Business Objectives *(targets / hypotheses — not validated results)*
+- **Clinical Outcome (target)**: Lower 30-day HF readmission rate in a future pilot (hypothesis: ~20% relative reduction).
+- **Engagement (target)**: High daily adherence to weight and symptom logging among active patients.
+- **Operational (target)**: Fewer low-value nurse callbacks via better alert filtering.
 
 ## 4. User Stories & Requirements
 
@@ -54,10 +54,30 @@ Heart Failure (HF) is a leading cause of hospital readmissions, with ~25% of pat
 ## 5. Technical Specifications
 - **Frontend**: React Native (Patient App), React + Tailwind CSS (Provider Dashboard).
 - **Backend**: Node.js / Python (FastAPI).
-- **AI Engine**:
-    - **Model**: XGBoost Classifier trained on MIMIC-III and proprietary pilot data.
-    - **Features**: $\Delta$Weight (3-day), Dyspnea Score, Fatigue Score, Medication Adherence, BNP levels (if available).
-    - **Explainability**: SHAP values to show *why* a patient is high risk (e.g., "+3 lbs weight gain").
+### 5.1 The Decompensation Models
+HeartGuide's logic aligns with **ACC 2024 Guidelines** on Remote Patient Management, specifically focusing on "multiparametric monitoring."
+
+#### A. The "Triangulation" Logic
+We avoid false alarms by demanding concordance between **Objective** (Weight) and **Subjective** (Symptom) data.
+*   **Rule 1 (The Safety Net)**: $\Delta$Weight > 3.0 lbs in 24h $\rightarrow$ **CRITICAL ALERT** (Regardless of symptoms).
+*   **Rule 2 (The AI Suspicion)**: 
+    *   IF $\Delta$Weight > 1.5 lbs AND Dyspnea Score > Baseline + 2
+    *   THEN Risk = HIGH (Predictive of readmission).
+
+#### B. Explainability (SHAP Values)
+To gain provider trust, every alert includes a specific clinical reason:
+*   *"Risk Score: 85% (Critical)"*
+*   *Why?*: "Rapid Weight Gain (+3.2 lbs) + Worsening Orthopnea."
+
+---
+
+## 6. Market Differentiation: HeartGuide vs. Hello Heart
+
+| Feature | Hello Heart (The Monitor) | HeartGuide AI (The Manager) |
+| :--- | :--- | :--- |
+| **Logic** | **Reactive**: Alerts *after* BP is high. | **Predictive**: Alerts *before* fluid overload becomes critical. |
+| **Data Source** | **Single (BP)**: Limited view of physiology. | **Triangulated (Weight + Symptoms + BP)**: Full hemodynamic picture. |
+| **User Role** | **Passive Logger**: "Just check your numbers." | **Active Partner**: "Confirm you took your Lasix." |
 
 ## 6. User Experience (UX)
 - **Patient App**: "Morning Routine" flow. App opens directly to the check-in screen. No navigation required for primary task.

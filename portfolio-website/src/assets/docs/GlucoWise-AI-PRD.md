@@ -9,28 +9,29 @@
 
 ## 1. Executive Summary
 
-**GlucoWise AI** is an intelligent coaching platform designed to help patients with Type 2 Diabetes (T2D) understand the relationship between their lifestyle choices and glucose levels. Unlike traditional logbooks that just record data, GlucoWise uses AI to identify patterns (e.g., "Your glucose spikes 2 hours after eating pasta") and provides personalized, actionable recommendations to improve glycemic control.
+**GlucoWise AI** is a clinical-workflow case study + working UI for **Type 2 diabetes on insulin** — helping patients and clinicians connect meals, glucose response, and bolus decision support. Scope is **not Type 1 diabetes**. This PRD defines prototype requirements; outcome metrics below are **targets / hypotheses**, not measured results.
 
 ### The Problem
 - **Data Overload**: Patients generate hundreds of glucose data points but lack the expertise to interpret them.
-- **Generic Advice**: "Eat better" is too vague. Patients need specific feedback based on their unique metabolic response.
+- **Generic Advice**: "Eat better" is too vague — insulin users need meal-specific decision support.
 - **High Friction**: Manual logging is tedious and leads to abandonment.
+- **Safety**: Bolus suggestions must sit behind deterministic checks and clinician-safe framing.
 
 ### The Solution
-A "smart" diabetes companion that:
-1.  **Simplifies Logging**: Uses computer vision (simulated) to log meals via photos.
-2.  **Connects the Dots**: Correlates specific foods with glucose excursions.
-3.  **Nudges Behavior**: Suggests specific food swaps to flatten glucose curves.
+A diabetes companion workflow that:
+1.  **Simplifies Logging**: Meal capture (including photo-assisted estimation in the UI).
+2.  **Connects the Dots**: Relates foods to likely glucose excursions.
+3.  **Supports Decisions**: Pre-meal coaching / smart-bolus style guidance with safety guardrails for human review.
 
 ---
 
 ## 2. User Personas
 
-### Primary Persona: "David" (The Newly Diagnosed)
-- **Profile**: 55-year-old accountant, recently diagnosed with T2D.
-- **Pain Point**: Overwhelmed by dietary restrictions. Doesn't know which foods spike his sugar.
-- **Goal**: Lower HbA1c below 7.0% without giving up all his favorite foods.
-- **Quote**: *"My doctor said 'watch your carbs,' but I don't know if that means no bread or just less bread."*
+### Primary Persona: "David" (Type 2 on insulin)
+- **Profile**: 55-year-old accountant with Type 2 diabetes, newly started on insulin.
+- **Pain Point**: Unsure how meals map to bolus decisions; fears hypo/hyper swings.
+- **Goal (target)**: Improve time-in-range / HbA1c without abandoning all favorite foods.
+- **Quote**: *"My doctor said 'watch your carbs,' but I don't know how that changes my dose before dinner."*
 
 ### Secondary Persona: "Dr. Lee" (The Endocrinologist)
 - **Profile**: Busy specialist with 15-minute appointment slots.
@@ -61,20 +62,36 @@ A "smart" diabetes companion that:
 
 ---
 
-## 4. AI/ML Capabilities
+## 4. AI/ML Capabilities: The "Simulation Engine"
 
-### 4.1 Natural Language Processing (NLP) for Food
-- **Input**: "Turkey sandwich on whole wheat with mayo"
-- **Model**: Named Entity Recognition (NER) to extract ingredients.
-- **Output**: {Carbs: 30g, Protein: 25g, Fat: 15g}
+### 4.1 The Smart Bolus Algorithm (FDA Class II SaMD Logic)
+Unlike simple "calculators," GlucoWise uses a dynamic safety-bounded formula inspired by the **JAMA 2024** findings on AI decision support non-inferiority.
 
-### 4.2 Glucose Pattern Clustering
-- **Algorithm**: K-Means Clustering on post-prandial glucose curves.
-- **Goal**: Group meals into "Green" (stable response), "Yellow" (moderate spike), and "Red" (severe spike) categories.
+*   **Core Formula**:
+    $$ \text{Bolus} = \left( \frac{\text{Carbohydrates (g)}}{\text{ICR}} \right) + \left( \frac{\text{Current BG} - \text{Target BG}}{\text{ISF}} \right) - \text{IOB} $$
+*   **Where**:
+    *   **ICR** = Insulin-to-Carb Ratio (clinician set).
+    *   **ISF** = Insulin Sensitivity Factor (adaptive).
+    *   **IOB** = Insulin On Board (decay function over 4 hours).
+*   **Safety Guardrails**:
+    *   **Max Bolus Cap**: Hard limit set by physician (e.g., 20 units).
+    *   **Hypo-Guard**: If current trend is dropping (>2 mg/dL/min), reduce calculated dose by 30%.
 
-### 4.3 Recommendation Engine
-- **Logic**: Collaborative filtering based on successful swaps from similar users.
-- **Example**: If User A stabilized glucose by switching to sourdough, suggest sourdough to User B who spikes on white bread.
+### 4.2 Pattern Recognition: "Metabolic Fingerprinting"
+*   **Input**: "Turkey sandwich on whole wheat"
+*   **NLP Extraction**: {Carbs: 30g, Protein: 25g, Fat: 15g} via **OpenAI GPT-4o**.
+*   **Cluster Analysis**: Groups meals into "Green/Yellow/Red" based on 2-hour post-prandial excursions.
+
+---
+
+## 5. Market Differentiation: GlucoWise vs. Omada
+
+| Feature | Omada Health (The Incumbent) | GlucoWise AI (The Challenger) |
+| :--- | :--- | :--- |
+| **Methodology** | **Human Coaching**: "Let's talk about why you ate that." | **Decision Automation**: "Here is the exact dose/swap to fix it." |
+| **Philosophy** | **Willpower-Driven**: Relies on behavioral psychology. | **Logistics-Driven**: Relies on metabolic simulation. |
+| **Scalability** | **Linear**: 1 Coach = 500 Patients. | **Exponential**: 1 AI = ∞ Patients. |
+| **GLP-1 fit** | Weak (Educational only). | Strong (Protein tracking to prevent sarcopenia). |
 
 ---
 

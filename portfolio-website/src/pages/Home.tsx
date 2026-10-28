@@ -105,6 +105,13 @@ function Home() {
                         transition={{ duration: 0.8 }}
                         className="text-center"
                     >
+                        <div className="mb-8 flex justify-center relative z-10">
+                            <img
+                                src="/images/profile-avatar.jpg"
+                                alt="Francisco Pinheiro"
+                                className="w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-teal-500/30 shadow-xl shadow-teal-900/20"
+                            />
+                        </div>
                         <h1 className="font-display text-5xl sm:text-7xl font-bold text-slate-900 dark:text-white mb-6 tracking-tighter leading-tight relative z-10">
                             Francisco Pinheiro
                         </h1>
