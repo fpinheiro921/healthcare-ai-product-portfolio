@@ -300,20 +300,20 @@ function Home() {
                         </Link>
 
                         <Link
-                            to="/docuflow-showcase"
+                            to="/documents/docuflow-prd"
                             className="glass-card p-8 group"
                         >
                             <div className="bg-emerald-50 dark:bg-emerald-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/50 transition-colors">
                                 <FileText className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                                DocuFlow Case Study
+                                DocuFlow PRD
                             </h3>
                             <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                Clinical documentation workflow — structured notes with clinician review (case study + UI).
+                                Clinical documentation workflow — structured notes with clinician review.
                             </p>
                             <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-sm">
-                                View case study <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                Read PRD <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </div>
                         </Link>
                     </div>
