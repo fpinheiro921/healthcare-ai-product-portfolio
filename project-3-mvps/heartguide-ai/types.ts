@@ -30,6 +30,8 @@ export interface FoodEntry {
   confidence?: string;
 }
 
+export type AppView = 'patient' | 'provider' | 'overview' | 'manager';
+
 export interface Patient {
   id: string;
   name: string;

@@ -99,6 +99,9 @@ export const mockWeather: WeatherData = {
   pm25: 12,
   temperature: 72,
   humidity: 45,
-  pollen: 'Moderate',
+  windSpeed: 8,
+  isDay: true,
+  weatherCode: 2,
+  pollen: 'Medium',
   condition: 'Partly Cloudy'
 };

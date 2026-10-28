@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+
 import { resumeData } from '../data/resume';
 import ArchitectureModal from '../components/ArchitectureModal';
 import { architectureData } from '../data/architecture';
@@ -50,8 +51,8 @@ function Home() {
             description: 'Proactive agent following the Predict-Prevent-Treat workflow. Features Human-in-the-Loop clinical oversight to reduce readmissions.',
             icon: Heart,
             color: 'from-red-500 to-pink-600',
-            url: 'https://heartguide-ai.vercel.app/',
-            features: ['🛡️ Human-in-the-Loop', 'Neural Care Specialist', 'Risk Simulator'],
+            url: '/heartguide-showcase',
+            features: ['🛡️ Human-in-the-Loop', 'Neural Care Specialist', 'BP + Risk Triangulation'],
             strategy: {
                 problem: "Heart Failure has a 24% readmission rate due to delayed symptom detection.",
                 solution: "A Continuous Monitoring Agent that detects weight drift (+2lbs) 48h before hospitalization.",
@@ -65,7 +66,7 @@ function Home() {
             description: 'Predictive agent that correlates AQI and clinical history to prevent asthma attacks before they happen.',
             icon: Wind,
             color: 'from-teal-500 to-cyan-600',
-            url: 'https://breatheasy-ai.vercel.app/',
+            url: '/breatheasy-showcase',
             features: ['🛡️ Predictive Safety', 'Neural Care Specialist', 'Trigger Simulator'],
             strategy: {
                 problem: "Asthma attacks are reactive; patients don't know environmental triggers until it's too late.",
@@ -80,12 +81,27 @@ function Home() {
             description: 'Real-time coaching agent using Computer Vision to predict glucose spikes and suggest interventions pre-meal.',
             icon: Droplet,
             color: 'from-blue-500 to-indigo-600',
-            url: 'https://glucowise-ai.vercel.app/',
+            url: '/glucowise-showcase',
             features: ['🛡️ Metabolic Physics', 'Neural Care Specialist', 'Glucose Prediction'],
             strategy: {
                 problem: "Diabetics struggle to estimate carb impact, leading to post-prandial spikes.",
                 solution: "Computer Vision estimation of Glycemic Load + Pre-Meal 'Smart Bolus' advice.",
                 kpi: "⇧ Time-in-Range (70-180)"
+            }
+        },
+        {
+            id: 'docuflow',
+            name: 'DocuFlow 2.0',
+            tagline: 'Privacy-First Agentic Scribe',
+            description: 'Offline-first clinical documentation engine. Uses fine-tuned SLMs to generate SOAP notes without patient data ever leaving the device.',
+            icon: FileText,
+            color: 'from-emerald-500 to-teal-600',
+            url: '/docuflow-showcase',
+            features: ['Offline SLM Engine', 'Tool-Augmented', 'Zero-Data-Leak'],
+            strategy: {
+                problem: "Cloud AI Scribes pose massive HIPAA/GDPR risks by sending PII to third-party servers.",
+                solution: "Local 350M Parameter Model with ToolBench architecture for 100% on-device processing.",
+                kpi: "0 Bytes Leaked"
             }
         }
     ];
@@ -204,22 +220,13 @@ function Home() {
             id: 'careflow-architect',
             name: 'CareFlow Architect',
             tagline: 'Visual Protocol Builder',
-            description: 'No-Code editor for clinicians to design triage algorithms. Demonstrates "Platform Product" thinking.',
+            description: 'Interactive education platform for training residents on clinical decision logic and protocol adherence.',
             icon: GitBranch,
             color: 'from-violet-500 to-fuchsia-600',
             url: 'https://careflow-architect-7uj5t9doq-franciscos-projects-73f8717a.vercel.app/',
             features: ['React Flow Engine', 'Visual Programming', 'JSON Protocol Export']
         },
-        {
-            id: 'docu-flow',
-            name: 'DocuFlow',
-            tagline: 'Clinical Discovery Engine',
-            description: 'Smart template engine that generates perfect admission notes in <45s. Replaces free-text typing with structured clinical choices.',
-            icon: FileText,
-            color: 'from-slate-500 to-slate-700',
-            url: 'https://docu-flow-franciscos-projects-73f8717a.vercel.app/',
-            features: ['Template Engine', 'Copy-to-EHR', 'Instant Preview']
-        },
+
         {
             id: 'sepsis-sentinel',
             name: 'SepsisSentinel',
@@ -260,9 +267,8 @@ function Home() {
                         transition={{ duration: 0.8 }}
                         className="text-center"
                     >
-                        <h1 className="font-display text-5xl sm:text-7xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
-                            Francisco Pinheiro<br />
-                            <span className="text-4xl sm:text-6xl text-slate-500 dark:text-slate-400 font-medium">Good is not good enough.</span>
+                        <h1 className="font-display text-5xl sm:text-7xl font-bold text-slate-900 dark:text-white mb-6 tracking-tighter leading-tight relative z-10">
+                            Francisco Pinheiro
                         </h1>
 
                         <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
@@ -283,7 +289,7 @@ function Home() {
                                 className="relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg shadow-blue-600/30 ring-2 ring-white/20"
                             >
                                 <Activity className="w-5 h-5" />
-                                Run System Simulation
+                                Explore Patient Journeys
                                 <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-slate-900 rounded-full shadow-lg">
                                     Beta
                                 </span>
@@ -305,8 +311,11 @@ function Home() {
             {/* Sword Manifesto Section */}
             <SwordManifesto />
 
+            {/* Featured Build: Candidate OS */}
+
+
             {/* Flagship Projects Section */}
-            <section id="flagship" className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300 print:hidden" >
+            < section id="flagship" className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300 print:hidden" >
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -345,26 +354,30 @@ function Home() {
                 </div>
 
                 {/* Architecture Modal */}
-                {selectedArchitectureId && architectureData[selectedArchitectureId] && (
-                    <ArchitectureModal
-                        isOpen={!!selectedArchitectureId}
-                        onClose={() => setSelectedArchitectureId(null)}
-                        data={architectureData[selectedArchitectureId]}
-                    />
-                )}
+                {
+                    selectedArchitectureId && architectureData[selectedArchitectureId] && (
+                        <ArchitectureModal
+                            isOpen={!!selectedArchitectureId}
+                            onClose={() => setSelectedArchitectureId(null)}
+                            data={architectureData[selectedArchitectureId]}
+                        />
+                    )
+                }
 
                 {/* Safety Report Modal */}
-                {selectedReportId && safetyReports[selectedReportId] && (
-                    <SafetyReportModal
-                        isOpen={!!selectedReportId}
-                        onClose={() => setSelectedReportId(null)}
-                        data={safetyReports[selectedReportId]}
-                    />
-                )}
+                {
+                    selectedReportId && safetyReports[selectedReportId] && (
+                        <SafetyReportModal
+                            isOpen={!!selectedReportId}
+                            onClose={() => setSelectedReportId(null)}
+                            data={safetyReports[selectedReportId]}
+                        />
+                    )
+                }
             </section >
 
             {/* Innovation Lab Projects Section */}
-            <section id="innovation" className="py-24 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 print:hidden border-t border-slate-200 dark:border-slate-800">
+            < section id="innovation" className="py-24 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 print:hidden border-t border-slate-200 dark:border-slate-800" >
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -559,61 +572,6 @@ function Home() {
                             </div>
                         </Link>
 
-                        {/* Teardowns */}
-                        <Link
-                            to="/documents/sword-teardown"
-                            className="glass-card p-8 group"
-                        >
-                            <div className="bg-purple-50 dark:bg-purple-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/50 transition-colors">
-                                <Search className="w-7 h-7 text-purple-600 dark:text-purple-400" />
-                            </div>
-                            <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                                Sword Health
-                            </h3>
-                            <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                Digital MSK care market analysis.
-                            </p>
-                            <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold text-sm">
-                                Read Analysis <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </div>
-                        </Link>
-
-                        <Link
-                            to="/documents/omada-teardown"
-                            className="glass-card p-8 group"
-                        >
-                            <div className="bg-emerald-50 dark:bg-emerald-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/50 transition-colors">
-                                <Search className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
-                            </div>
-                            <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                                Omada Health
-                            </h3>
-                            <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                "Virtual First" chronic care pioneer.
-                            </p>
-                            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-sm">
-                                Read Analysis <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </div>
-                        </Link>
-
-                        <Link
-                            to="/documents/hello-heart-teardown"
-                            className="glass-card p-8 group"
-                        >
-                            <div className="bg-red-50 dark:bg-red-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-100 dark:group-hover:bg-red-900/50 transition-colors">
-                                <Search className="w-7 h-7 text-red-600 dark:text-red-400" />
-                            </div>
-                            <h3 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                                Hello Heart
-                            </h3>
-                            <p className="text-slate-600 dark:text-slate-400 mb-4">
-                                Frictionless cardiovascular health monitoring.
-                            </p>
-                            <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-semibold text-sm">
-                                Read Analysis <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </div>
-                        </Link>
-
 
 
                     </div>
@@ -656,13 +614,6 @@ function Home() {
                         <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-16 text-center print:text-left print:mb-8 print:text-base print:max-w-none print:text-slate-900">
                             Bridging clinical medicine, AI/ML engineering, and product thinking to build solutions that truly address healthcare challenges.
                         </p>
-
-                        {/* Bio Card */}
-                        <div className="glass-card p-8 mb-12 print:shadow-none print:border-none print:p-0 print:mb-8">
-                            <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed print:text-base print:text-slate-900">
-                                {resumeData.bio}
-                            </p>
-                        </div>
 
                         {/* Work Experience Timeline */}
                         <div className="mb-16 print:mb-8">

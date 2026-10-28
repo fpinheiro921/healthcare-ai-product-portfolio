@@ -61,20 +61,36 @@ A "smart" diabetes companion that:
 
 ---
 
-## 4. AI/ML Capabilities
+## 4. AI/ML Capabilities: The "Simulation Engine"
 
-### 4.1 Natural Language Processing (NLP) for Food
-- **Input**: "Turkey sandwich on whole wheat with mayo"
-- **Model**: Named Entity Recognition (NER) to extract ingredients.
-- **Output**: {Carbs: 30g, Protein: 25g, Fat: 15g}
+### 4.1 The Smart Bolus Algorithm (FDA Class II SaMD Logic)
+Unlike simple "calculators," GlucoWise uses a dynamic safety-bounded formula inspired by the **JAMA 2024** findings on AI decision support non-inferiority.
 
-### 4.2 Glucose Pattern Clustering
-- **Algorithm**: K-Means Clustering on post-prandial glucose curves.
-- **Goal**: Group meals into "Green" (stable response), "Yellow" (moderate spike), and "Red" (severe spike) categories.
+*   **Core Formula**:
+    $$ \text{Bolus} = \left( \frac{\text{Carbohydrates (g)}}{\text{ICR}} \right) + \left( \frac{\text{Current BG} - \text{Target BG}}{\text{ISF}} \right) - \text{IOB} $$
+*   **Where**:
+    *   **ICR** = Insulin-to-Carb Ratio (clinician set).
+    *   **ISF** = Insulin Sensitivity Factor (adaptive).
+    *   **IOB** = Insulin On Board (decay function over 4 hours).
+*   **Safety Guardrails**:
+    *   **Max Bolus Cap**: Hard limit set by physician (e.g., 20 units).
+    *   **Hypo-Guard**: If current trend is dropping (>2 mg/dL/min), reduce calculated dose by 30%.
 
-### 4.3 Recommendation Engine
-- **Logic**: Collaborative filtering based on successful swaps from similar users.
-- **Example**: If User A stabilized glucose by switching to sourdough, suggest sourdough to User B who spikes on white bread.
+### 4.2 Pattern Recognition: "Metabolic Fingerprinting"
+*   **Input**: "Turkey sandwich on whole wheat"
+*   **NLP Extraction**: {Carbs: 30g, Protein: 25g, Fat: 15g} via **OpenAI GPT-4o**.
+*   **Cluster Analysis**: Groups meals into "Green/Yellow/Red" based on 2-hour post-prandial excursions.
+
+---
+
+## 5. Market Differentiation: GlucoWise vs. Omada
+
+| Feature | Omada Health (The Incumbent) | GlucoWise AI (The Challenger) |
+| :--- | :--- | :--- |
+| **Methodology** | **Human Coaching**: "Let's talk about why you ate that." | **Decision Automation**: "Here is the exact dose/swap to fix it." |
+| **Philosophy** | **Willpower-Driven**: Relies on behavioral psychology. | **Logistics-Driven**: Relies on metabolic simulation. |
+| **Scalability** | **Linear**: 1 Coach = 500 Patients. | **Exponential**: 1 AI = ∞ Patients. |
+| **GLP-1 fit** | Weak (Educational only). | Strong (Protein tracking to prevent sarcopenia). |
 
 ---
 

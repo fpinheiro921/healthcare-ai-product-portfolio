@@ -40,33 +40,33 @@ const AgentInsight: React.FC<AgentInsightProps> = ({ predictedGlucose, mealCarbs
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className={`relative overflow-hidden rounded-2xl p-5 border shadow-sm ${isCritical ? 'bg-red-50 border-red-100' :
-                isWarning ? 'bg-amber-50 border-amber-100' :
-                    'bg-indigo-50 border-indigo-100'
+            className={`relative overflow-hidden rounded-2xl p-5 border shadow-sm ${isCritical ? 'bg-red-50 border-red-200 text-red-900' :
+                isWarning ? 'bg-amber-50 border-amber-200 text-amber-900' :
+                    'bg-emerald-50 border-emerald-200 text-emerald-900'
                 }`}
         >
             <div className="flex gap-4 items-start">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${isCritical ? 'bg-red-500 text-white' :
+                <div className={`w-11 h-11 rounded-full flex items-center justify-center shadow-sm flex-shrink-0 ${isCritical ? 'bg-red-500 text-white' :
                     isWarning ? 'bg-amber-500 text-white' :
-                        'bg-indigo-600 text-white'
+                        'bg-emerald-600 text-white'
                     }`}>
-                    <Sparkles size={20} fill="currentColor" className={isCritical ? "animate-pulse" : ""} />
+                    <Sparkles size={18} fill="currentColor" className={isCritical ? "animate-pulse" : ""} />
                 </div>
 
                 <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
                         <span className={`text-xs font-bold uppercase tracking-wider ${isCritical ? 'text-red-600' :
                             isWarning ? 'text-amber-600' :
-                                'text-indigo-600'
+                                'text-emerald-600'
                             }`}>
                             Neural Care Specialist
                         </span>
                         <span className="text-[10px] text-slate-400 font-medium">Live Analysis</span>
                     </div>
-                    <p className="font-bold text-slate-800 text-base leading-tight mb-1">
+                    <p className="font-bold text-sm leading-snug">
                         {insight.message}
                     </p>
-                    <p className="text-slate-600 text-sm leading-relaxed">
+                    <p className="text-xs mt-1 opacity-90 leading-relaxed">
                         {insight.action}
                     </p>
                 </div>

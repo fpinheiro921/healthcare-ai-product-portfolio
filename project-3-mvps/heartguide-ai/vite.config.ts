@@ -11,8 +11,7 @@ export default defineConfig(({ mode }) => {
       },
       plugins: [react()],
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.LM_STUDIO_URL': JSON.stringify(env.LM_STUDIO_URL || 'http://localhost:1234/v1/chat/completions'),
       },
       resolve: {
         alias: {

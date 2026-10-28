@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
     ExternalLink,
     Code as CodeIcon,
@@ -39,6 +40,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const Icon = project.icon;
+    const isInternal = project.url.startsWith('/');
 
     return (
         <div className="relative h-[640px] perspective-1000 group">
@@ -46,15 +48,28 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: index * 0.2 }}
+                transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                    delay: index * 0.1 // Staggered entrance
+                }}
+                whileHover={{
+                    y: -8,
+                    scale: 1.02,
+                    transition: { type: "spring", stiffness: 400, damping: 10 }
+                }}
                 className="w-full h-full relative"
             >
+                {/* Front and Back Container */}
                 <div
-                    className="w-full h-full relative preserve-3d transition-transform duration-700"
-                    style={{ transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+                    className={`relative w-full h-full duration-500 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+                    style={{ transformStyle: 'preserve-3d' }}
                 >
                     {/* FRONT FACE (Showcase) */}
-                    <div className="absolute inset-0 backface-hidden glass-card overflow-hidden hover:shadow-2xl hover:shadow-teal-900/10 dark:hover:shadow-teal-900/20 border-2 border-transparent hover:border-teal-500/20 flex flex-col bg-white dark:bg-slate-900">
+                    <div className="absolute inset-0 backface-hidden glass-card overflow-hidden hover:shadow-2xl hover:shadow-teal-900/10 dark:hover:shadow-teal-900/20 border-2 border-transparent hover:border-teal-500/20 flex flex-col bg-white dark:bg-slate-900 rounded-3xl">
+                        {/* Spotlight Gradient on Hover */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
 
                         {/* Header */}
                         <div className={`h-36 min-h-[9rem] max-h-[9rem] shrink-0 bg-gradient-to-br ${project.color} relative overflow-hidden`}>
@@ -105,15 +120,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                             </div>
 
                             <div className="flex flex-col gap-3 mt-auto">
-                                <a
-                                    href={project.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="w-full inline-flex justify-center items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg active:scale-95"
-                                >
-                                    Launch App
-                                    <ExternalLink className="w-4 h-4" />
-                                </a>
+                                {isInternal ? (
+                                    <Link
+                                        to={project.url}
+                                        className="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-slate-900/20 dark:hover:shadow-white/20 transition-all duration-200 shadow-lg active:scale-95"
+                                    >
+                                        View Showcase
+                                        <ArrowRight className="w-4 h-4" />
+                                    </Link>
+                                ) : (
+                                    <a
+                                        href={project.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full inline-flex justify-center items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-slate-900/20 dark:hover:shadow-white/20 transition-all duration-200 shadow-lg active:scale-95"
+                                    >
+                                        Launch App
+                                        <ExternalLink className="w-4 h-4" />
+                                    </a>
+                                )}
 
                                 <div className="grid grid-cols-2 gap-3 w-full">
                                     {onArchitectureClick && (

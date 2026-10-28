@@ -67,3 +67,5 @@ export interface WeatherData {
   pollen: string; // Changed to string to support "High (Grass)"
   condition: string;
 }
+
+export type AppView = 'patient' | 'provider' | 'overview' | 'manager';

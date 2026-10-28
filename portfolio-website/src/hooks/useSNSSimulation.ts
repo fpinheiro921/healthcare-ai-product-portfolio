@@ -75,9 +75,10 @@ export const useSNSSimulation = () => {
 
     const metrics = useMemo(() => {
         // Baseline Metrics (The "Problem" State)
-        let cost = 14.5; // Billion EUR
-        let occupancy = 94.5; // %
-        let waitTime = 6.8; // Hours
+        // Baseline Metrics (The "Problem" State)
+        let cost = 15.0; // Billion EUR (approx. SNS budget pressure)
+        let occupancy = 96.0; // % (Critical Saturation)
+        let waitTime = 6.0; // Hours (LVT Average)
         let burnout = 8.4; // Index / 10
         let safety = 12500; // Preventable Adverse Events / yr
 

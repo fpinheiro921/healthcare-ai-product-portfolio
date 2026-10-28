@@ -3,7 +3,7 @@ import { Patient, SymptomLog, FoodEntry } from '../../types';
 import AIChatInterface from '../AIChatInterface';
 import AgentInsight from '../AgentInsight';
 import RecentActivityLog from '../RecentActivityLog';
-import { Heart, Scale, Activity, AlertCircle, Camera, Utensils, MessageSquare, Phone, Check, BookOpen, TrendingUp, Info } from 'lucide-react';
+import { Heart, Scale, Activity, AlertCircle, Camera, Utensils, MessageSquare, Phone, Check, BookOpen, TrendingUp, Info, Loader2 } from 'lucide-react';
 import { estimateSodium, chatWithNurseAI, assessPatientRisk } from '../../services/geminiService';
 import { EducationView } from './EducationView';
 import { DecompensationMonitor } from './DecompensationMonitor';
@@ -86,8 +86,17 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
     setIsEmergency(true);
   };
 
+  // Keep form state in sync when switching patients in the provider view
+  useEffect(() => {
+    const last = patient.weightHistory[patient.weightHistory.length - 1]?.weight;
+    setWeight(last?.toString() || "150");
+    setSimulatedWeight(last || 150);
+    setCheckinComplete(false);
+  }, [patient.id]);
+
   const handleCheckinSubmit = async () => {
     const currentWeight = parseFloat(weight);
+    if (isNaN(currentWeight) || currentWeight <= 0) return;
     const prevWeight = patient.weightHistory[patient.weightHistory.length - 1]?.weight || currentWeight;
 
     const log: SymptomLog = {
@@ -112,6 +121,13 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
     };
 
     onUpdatePatient(updatedPatient);
+
+    // Chest pain reported at check-in escalates to the emergency protocol
+    if (chestPain) {
+      setIsEmergency(true);
+      return;
+    }
+
     setCheckinComplete(true);
     setTimeout(() => setActiveTab('home'), 1500);
   };
@@ -181,12 +197,17 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
   return (
     <div className="flex flex-col h-full bg-slate-50 relative overflow-hidden font-sans">
       {/* Header */}
-      <div className="bg-white px-6 py-5 shadow-sm flex justify-between items-center sticky top-0 z-10 border-b border-slate-100">
-        <div>
-          <h2 className="text-xl font-bold text-slate-800 tracking-tight">Hi, {patient.name.split(' ')[0]}</h2>
-          <p className="text-xs text-slate-500 font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+      <div className="bg-gradient-to-r from-white to-indigo-50/50 px-6 py-5 shadow-sm flex justify-between items-center sticky top-0 z-10 border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center shadow-md">
+            <Heart size={20} className="text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-800 tracking-tight">Hi, {patient.name.split(' ')[0]}</h2>
+            <p className="text-xs text-slate-500 font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+          </div>
         </div>
-        <button onClick={handleEmergency} className="bg-red-50 text-red-600 p-2.5 rounded-full hover:bg-red-100 transition-colors shadow-sm border border-red-100">
+        <button onClick={handleEmergency} className="bg-red-50 text-red-600 p-2.5 rounded-full hover:bg-red-100 transition-all duration-200 shadow-sm border border-red-100 hover:shadow-md hover:scale-105 active:scale-95">
           <AlertCircle size={22} />
         </button>
       </div>
@@ -200,14 +221,7 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
             {/* Neural Guardian Agent */}
             <AgentInsight
               riskScore={simulatedRiskScore}
-              weightChange={simulatedWeight - 150} // Using baseline 150 for demo logic
-              symptomCount={simulatedSob}
-            />
-
-            {/* Neural Guardian Agent */}
-            <AgentInsight
-              riskScore={simulatedRiskScore}
-              weightChange={simulatedWeight - 150} // Using baseline 150 for demo logic
+              weightChange={simulatedWeight - 150}
               symptomCount={simulatedSob}
             />
 
@@ -270,14 +284,14 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
 
             {/* Quick Actions */}
             <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setActiveTab('checkin')} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-transform hover:shadow-md">
-                <div className="bg-indigo-50 p-3.5 rounded-2xl text-indigo-600">
+              <button onClick={() => setActiveTab('checkin')} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-3.5 rounded-2xl text-indigo-600">
                   <Activity size={26} />
                 </div>
                 <span className="font-semibold text-slate-700 text-sm">Daily Check-in</span>
               </button>
-              <button onClick={() => setActiveTab('food')} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-transform hover:shadow-md">
-                <div className="bg-orange-50 p-3.5 rounded-2xl text-orange-600">
+              <button onClick={() => setActiveTab('food')} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-3.5 rounded-2xl text-orange-600">
                   <Utensils size={26} />
                 </div>
                 <span className="font-semibold text-slate-700 text-sm">Log Food</span>
@@ -285,10 +299,15 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
             </div>
 
             {/* Medication Tracker */}
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
               <div className="flex justify-between items-center mb-5">
-                <h3 className="font-bold text-lg text-slate-800">Today's Medications</h3>
-                <span className="text-xs font-medium bg-slate-100 text-slate-600 px-2 py-1 rounded-md">
+                <h3 className="font-bold text-lg text-slate-800 flex items-center gap-2">
+                  <div className="p-1.5 bg-indigo-100 rounded-lg">
+                    <Heart size={16} className="text-indigo-600" />
+                  </div>
+                  Today's Medications
+                </h3>
+                <span className="text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-full">
                   {patient.medications.filter(m => m.takenToday).length}/{patient.medications.length} Taken
                 </span>
               </div>
@@ -391,7 +410,7 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
 
                 <button
                   onClick={handleCheckinSubmit}
-                  className="w-full bg-teal-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-teal-600/20 hover:bg-teal-700 active:scale-95 transition-all"
+                  className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white py-4 rounded-2xl font-bold shadow-lg shadow-indigo-600/20 hover:shadow-xl hover:shadow-indigo-600/30 active:scale-95 transition-all duration-200"
                 >
                   Submit Report
                 </button>
@@ -410,6 +429,74 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
 
         {activeTab === 'food' && (
           <div className="p-5 space-y-6">
+            {/* Daily Sodium Tracker */}
+            <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-bold text-slate-800">Daily Sodium</h3>
+                <span className={`text-sm font-bold ${dailySodium > sodiumLimit ? 'text-red-600' : 'text-slate-600'}`}>
+                  {dailySodium} / {sodiumLimit} mg
+                </span>
+              </div>
+              <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${dailySodium > sodiumLimit ? 'bg-red-500' : dailySodium > sodiumLimit * 0.8 ? 'bg-amber-400' : 'bg-emerald-500'}`}
+                  style={{ width: `${Math.min(100, (dailySodium / sodiumLimit) * 100)}%` }}
+                />
+              </div>
+              {dailySodium > sodiumLimit && (
+                <p className="text-xs text-red-600 font-medium mt-2">Limit exceeded — choose low-sodium options for the rest of the day.</p>
+              )}
+            </div>
+
+            {/* Food Input */}
+            <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100">
+              <h3 className="font-bold text-slate-800 mb-3">Log a Meal</h3>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={foodInput}
+                  onChange={(e) => setFoodInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleFoodSubmit()}
+                  placeholder="e.g., Grilled chicken with rice"
+                  aria-label="Describe your meal"
+                  className="flex-1 bg-slate-100 text-slate-800 text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                />
+                <button
+                  onClick={handleFoodSubmit}
+                  disabled={!foodInput.trim() || scanningFood}
+                  className="bg-gradient-to-br from-orange-500 to-orange-600 text-white px-4 rounded-xl font-semibold text-sm disabled:opacity-40 flex items-center gap-2"
+                >
+                  {scanningFood ? <Loader2 size={16} className="animate-spin" /> : <Camera size={16} />}
+                  {scanningFood ? 'Analyzing' : 'Estimate'}
+                </button>
+              </div>
+              <p className="text-xs text-slate-400 mt-2">AI estimates sodium content per serving.</p>
+            </div>
+
+            {/* Today's Food Log */}
+            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+              <div className="p-5 border-b border-slate-100">
+                <h3 className="font-bold text-slate-800">Today's Log</h3>
+              </div>
+              {patient.foodLogs.length === 0 ? (
+                <p className="p-5 text-sm text-slate-400">No foods logged yet today.</p>
+              ) : (
+                <div className="divide-y divide-slate-50">
+                  {patient.foodLogs.map(f => (
+                    <div key={f.id} className="p-4 flex justify-between items-start gap-3">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-sm text-slate-800 truncate">{f.name}</p>
+                        {f.confidence && <p className="text-xs text-slate-400 mt-0.5">{f.confidence}</p>}
+                      </div>
+                      <span className={`text-sm font-bold whitespace-nowrap ${f.sodiumMg > 600 ? 'text-red-600' : 'text-emerald-600'}`}>
+                        {f.sodiumMg} mg
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <RecentActivityLog />
           </div>
         )}
@@ -419,7 +506,7 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
         )}
 
         {activeTab === 'chat' && (
-          <div className="p-5 h-full">
+          <div className="p-4 h-full flex flex-col">
             <AIChatInterface nurseName="Nurse Sarah" specialty="Cardiology" />
           </div>
         )}
@@ -427,25 +514,25 @@ export const PatientView: React.FC<PatientViewProps> = ({ patient, onUpdatePatie
       </div>
 
       {/* Bottom Nav */}
-      <div className="bg-white/90 backdrop-blur-lg border-t border-slate-200 px-6 py-4 flex justify-between items-center absolute bottom-0 w-full z-20 pb-8">
-        <button onClick={() => setActiveTab('home')} className={`${activeTab === 'home' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <Heart size={24} className={activeTab === 'home' ? 'fill-current' : ''} />
+      <div className="bg-white/95 backdrop-blur-xl border-t border-slate-200 px-4 py-3 flex justify-between items-center absolute bottom-0 w-full z-20 pb-6">
+        <button onClick={() => setActiveTab('home')} className={`${activeTab === 'home' ? 'text-indigo-600 border-indigo-500 bg-indigo-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}>
+          <Heart size={22} className={activeTab === 'home' ? 'fill-current stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Home</span>
         </button>
-        <button onClick={() => setActiveTab('checkin')} className={`${activeTab === 'checkin' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <Activity size={24} />
+        <button onClick={() => setActiveTab('checkin')} className={`${activeTab === 'checkin' ? 'text-indigo-600 border-indigo-500 bg-indigo-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}>
+          <Activity size={22} className={activeTab === 'checkin' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Check-in</span>
         </button>
-        <button onClick={() => setActiveTab('food')} className={`${activeTab === 'food' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <Utensils size={24} />
+        <button onClick={() => setActiveTab('food')} className={`${activeTab === 'food' ? 'text-indigo-600 border-indigo-500 bg-indigo-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}>
+          <Utensils size={22} className={activeTab === 'food' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Log</span>
         </button>
-        <button onClick={() => setActiveTab('learn')} className={`${activeTab === 'learn' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <BookOpen size={24} />
+        <button onClick={() => setActiveTab('learn')} className={`${activeTab === 'learn' ? 'text-indigo-600 border-indigo-500 bg-indigo-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}>
+          <BookOpen size={22} className={activeTab === 'learn' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Learn</span>
         </button>
-        <button onClick={() => setActiveTab('chat')} className={`${activeTab === 'chat' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <MessageSquare size={24} />
+        <button onClick={() => setActiveTab('chat')} className={`${activeTab === 'chat' ? 'text-indigo-600 border-indigo-500 bg-indigo-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}>
+          <MessageSquare size={22} className={activeTab === 'chat' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Care</span>
         </button>
       </div>

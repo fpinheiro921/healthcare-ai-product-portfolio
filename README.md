@@ -69,4 +69,4 @@ The strategy is organized into **3 Strategic Environments**, mirroring the patie
 
 ---
 
-> Built by **Francisco Pinheiro** (MD, MBA) | [Portfolio](https://portfolio-website-franciscos-projects-73f8717a.vercel.app/)
+> Built by **Francisco Pinheiro** (MD, MSc Biomedical Engineering) | [Portfolio](https://portfolio-website-franciscos-projects-73f8717a.vercel.app/)

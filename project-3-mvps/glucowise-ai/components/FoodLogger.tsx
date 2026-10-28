@@ -4,7 +4,7 @@ import { analyzeMealImage } from '../services/geminiService';
 import { motion } from 'framer-motion';
 
 interface FoodLoggerProps {
-  onLog: (data: any) => void;
+  onLog?: (data: any) => void;
 }
 
 const FoodLogger: React.FC<FoodLoggerProps> = ({ onLog }) => {
@@ -77,11 +77,11 @@ const FoodLogger: React.FC<FoodLoggerProps> = ({ onLog }) => {
 
   const confirmLog = () => {
     if (analysis) {
-      onLog(analysis);
+      onLog?.(analysis);
       setPreview(null);
       setAnalysis(null);
     } else if (currentMeal.name) {
-      onLog({
+      onLog?.({
         ...currentMeal,
         totalCarbs: Number(currentMeal.carbs),
         totalCalories: Number(currentMeal.calories),

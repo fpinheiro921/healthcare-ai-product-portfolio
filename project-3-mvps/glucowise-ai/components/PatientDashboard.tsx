@@ -3,12 +3,12 @@ import AIChatInterface from './AIChatInterface';
 import AgentInsight from './AgentInsight';
 import RecentActivityLog from './RecentActivityLog';
 import SmartBolusCalculator from './SmartBolusCalculator';
-import { Plus, Bell, TrendingUp, Activity, Pill, AlertTriangle, Calendar, Droplet, LineChart as ChartIcon, Heart, Utensils, BookOpen, MessageSquare, Check, Info, AlertCircle } from 'lucide-react';
+import { Plus, Bell, TrendingUp, Activity, Pill, AlertTriangle, Calendar, Droplet, LineChart as ChartIcon, Heart, Utensils, BookOpen, MessageSquare, Check, AlertCircle, Loader2 } from 'lucide-react';
 import GlucoseChart from './GlucoseChart';
 import FoodLogger from './FoodLogger';
 import { GlucoseReading, GlucoseContext, Medication } from '../types';
 import { MealPredictor } from './MealPredictor';
-import { getGlucoseInsights } from '../services/geminiService';
+import { getGlucoseInsights, generateEducationalContent } from '../services/geminiService';
 
 // Mock Data
 const MOCK_READINGS: GlucoseReading[] = Array.from({ length: 20 }, (_, i) => ({
@@ -43,29 +43,49 @@ const PatientDashboard: React.FC = () => {
   // Agent State
   const [prediction, setPrediction] = useState({ peak: 0, carbs: 0 });
 
+  // Check-in State
+  const [checkinFasting, setCheckinFasting] = useState('');
+  const [checkinSteps, setCheckinSteps] = useState('');
+  const [checkinNotes, setCheckinNotes] = useState('');
+  const [checkinSuccess, setCheckinSuccess] = useState(false);
+  const [showEmergency, setShowEmergency] = useState(false);
+
+  // Learn tab: AI-personalized article state
+  const [learnTopic, setLearnTopic] = useState<string | null>(null);
+  const [learnContent, setLearnContent] = useState<string | null>(null);
+  const [learnLoading, setLearnLoading] = useState(false);
+
+  const openLearnTopic = async (title: string) => {
+    setLearnTopic(title);
+    setLearnContent(null);
+    setLearnLoading(true);
+    const result = await generateEducationalContent(title, 'Type 2 Diabetes on insulin');
+    setLearnContent(result.content);
+    setLearnLoading(false);
+  };
+
   // Fetch AI insights on mount or when readings change
   useEffect(() => {
+    let cancelled = false;
     const fetchInsights = async () => {
       try {
-        // Only simulate API call for now to avoid immediate key requirement on render if not set
-        if (process.env.API_KEY) {
-          const result = await getGlucoseInsights(readings, medications);
-          setInsight(result);
-        } else {
-          // Fallback mock insight
+        const result = await getGlucoseInsights(readings, medications);
+        if (!cancelled) setInsight(result);
+      } catch (e) {
+        console.error("Failed to get insights", e);
+        if (!cancelled) {
           setInsight({
             hypoRiskScore: 15,
             riskLevel: "Low",
             insightTitle: "Stable Trends",
             insightMessage: "Your levels have been consistent. Great job on the post-meal walks.",
             recommendation: "Maintain current medication schedule."
-          })
+          });
         }
-      } catch (e) {
-        console.error("Failed to get insights", e);
       }
     };
     fetchInsights();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [readings]);
 
@@ -79,10 +99,11 @@ const PatientDashboard: React.FC = () => {
   }, [readings]);
 
   const addReading = () => {
-    if (!newReadingValue) return;
+    const value = parseInt(newReadingValue);
+    if (isNaN(value) || value < 20 || value > 600) return;
     const reading: GlucoseReading = {
       id: Date.now().toString(),
-      value: parseInt(newReadingValue),
+      value,
       timestamp: new Date().toISOString(),
       context: GlucoseContext.PRE_MEAL, // Default for now
     };
@@ -137,15 +158,44 @@ const PatientDashboard: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-slate-50 relative overflow-hidden font-sans">
       {/* Header */}
-      <div className="bg-white px-6 py-5 shadow-sm flex justify-between items-center sticky top-0 z-10 border-b border-slate-100">
-        <div>
-          <h2 className="text-xl font-bold text-slate-800 tracking-tight">Hi, John</h2>
-          <p className="text-xs text-slate-500 font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+      <div className="bg-gradient-to-r from-white to-emerald-50/50 px-6 py-5 shadow-sm flex justify-between items-center sticky top-0 z-10 border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-md">
+            <Droplet size={20} className="text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-800 tracking-tight">Hi, John</h2>
+            <p className="text-xs text-slate-500 font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+          </div>
         </div>
-        <button className="bg-red-50 text-red-600 p-2.5 rounded-full hover:bg-red-100 transition-colors shadow-sm border border-red-100">
+        <button onClick={() => setShowEmergency(true)} aria-label="Emergency" className="bg-red-50 text-red-600 p-2.5 rounded-full hover:bg-red-100 transition-all duration-200 shadow-sm border border-red-100 hover:shadow-md hover:scale-105 active:scale-95">
           <AlertCircle size={22} />
         </button>
       </div>
+
+      {/* Emergency Modal */}
+      {showEmergency && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl border-t-8 border-red-600">
+            <div className="flex flex-col items-center text-center">
+              <AlertTriangle size={48} className="text-red-600 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Emergency Protocol</h2>
+              <p className="text-gray-600 mb-4">If blood sugar is very low and the person is confused, unconscious, or cannot swallow, do not give food or insulin.</p>
+              <p className="text-gray-600 mb-6">If conscious with low blood sugar: take 15g fast-acting carbs and recheck in 15 minutes.</p>
+
+              <a href="tel:911" className="w-full bg-red-600 text-white py-4 rounded-xl font-bold text-lg mb-3 hover:bg-red-700 transition">
+                Call 911 Immediately
+              </a>
+              <button
+                onClick={() => setShowEmergency(false)}
+                className="text-gray-500 hover:text-gray-700 font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto pb-24 scroll-smooth">
@@ -193,15 +243,15 @@ const PatientDashboard: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <button
                 onClick={() => setShowAddReading(true)}
-                className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-transform hover:shadow-md"
+                className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
               >
-                <div className="bg-emerald-50 p-3.5 rounded-2xl text-emerald-600">
+                <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 p-3.5 rounded-2xl text-emerald-600 shadow-sm">
                   <Plus size={26} />
                 </div>
                 <span className="font-semibold text-slate-700 text-sm">Log Glucose</span>
               </button>
-              <button className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-transform hover:shadow-md">
-                <div className="bg-blue-50 p-3.5 rounded-2xl text-blue-600">
+              <button className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+                <div className="bg-gradient-to-br from-sky-100 to-sky-200 p-3.5 rounded-2xl text-sky-600 shadow-sm">
                   <Calendar size={26} />
                 </div>
                 <span className="font-semibold text-slate-700 text-sm">Schedule</span>
@@ -298,7 +348,8 @@ const PatientDashboard: React.FC = () => {
                     </button>
                     <button
                       onClick={addReading}
-                      className="flex-1 py-3.5 bg-emerald-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-colors"
+                      disabled={!newReadingValue || isNaN(parseInt(newReadingValue))}
+                      className="flex-1 py-3.5 bg-emerald-600 text-white rounded-xl font-semibold shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Save Reading
                     </button>
@@ -311,8 +362,16 @@ const PatientDashboard: React.FC = () => {
 
         {/* Placeholders for other tabs */}
         {activeTab === 'food' && (
-          <div className="p-5 space-y-6">
-            <RecentActivityLog />
+          <div className="p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-slate-900">Log a meal</h3>
+            <FoodLogger />
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              <p className="font-semibold text-slate-900 mb-1">Tips</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Prioritize lean protein + fiber to blunt glucose spikes.</li>
+                <li>Log carbs to improve MealPredictor accuracy.</li>
+              </ul>
+            </div>
           </div>
         )}
 
@@ -323,40 +382,127 @@ const PatientDashboard: React.FC = () => {
         )}
 
         {activeTab === 'checkin' && (
-          <div className="p-8 text-center text-slate-500 mt-20">
-            <p>Check-in form coming soon.</p>
-            <button onClick={() => setActiveTab('home')} className="mt-4 text-teal-600 font-bold">Go Home</button>
+          <div className="p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-slate-900">Daily check-in</h3>
+            {checkinSuccess && (
+              <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-sm text-green-700 flex items-center gap-2">
+                <Check size={16} /> Check-in saved! Your care team has been notified.
+              </div>
+            )}
+            <div className="grid grid-cols-2 gap-3 text-sm text-slate-700">
+              <label className="space-y-1">
+                <span className="text-xs text-slate-500">Fasting glucose (mg/dL)</span>
+                <input type="number" value={checkinFasting} onChange={(e) => setCheckinFasting(e.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="95" />
+              </label>
+              <label className="space-y-1">
+                <span className="text-xs text-slate-500">Steps today</span>
+                <input type="number" value={checkinSteps} onChange={(e) => setCheckinSteps(e.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="4500" />
+              </label>
+              <label className="space-y-1 col-span-2">
+                <span className="text-xs text-slate-500">Notes</span>
+                <textarea value={checkinNotes} onChange={(e) => setCheckinNotes(e.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" rows={2} placeholder="Light walk after lunch, feeling good." />
+              </label>
+            </div>
+            <button onClick={() => {
+              const fastingVal = parseInt(checkinFasting);
+              if (!isNaN(fastingVal) && fastingVal >= 20 && fastingVal <= 600) {
+                const reading: GlucoseReading = {
+                  id: Date.now().toString(),
+                  value: fastingVal,
+                  timestamp: new Date().toISOString(),
+                  context: GlucoseContext.FASTING,
+                };
+                setReadings([...readings, reading]);
+              }
+              setCheckinSuccess(true);
+              setTimeout(() => { setCheckinSuccess(false); setActiveTab('home'); }, 2500);
+            }} className="w-full py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl font-bold shadow-lg shadow-emerald-600/20 hover:shadow-xl hover:shadow-emerald-600/30 active:scale-95 transition-all duration-200">Submit Check-in</button>
           </div>
         )}
 
         {activeTab === 'learn' && (
-          <div className="p-8 text-center text-slate-500 mt-20">
-            <p>Education modules coming soon.</p>
-            <button onClick={() => setActiveTab('home')} className="mt-4 text-teal-600 font-bold">Go Home</button>
+          <div className="p-5 space-y-4 text-sm text-slate-700">
+            {learnTopic ? (
+              <div>
+                <button onClick={() => { setLearnTopic(null); setLearnContent(null); }} className="mb-4 text-xs font-bold text-emerald-600 hover:text-emerald-700">
+                  ← Back to topics
+                </button>
+                <h3 className="text-base font-bold text-slate-800 mb-3">{learnTopic}</h3>
+                {learnLoading ? (
+                  <div className="flex items-center gap-2 text-slate-400 py-8 justify-center">
+                    <Loader2 size={18} className="animate-spin" />
+                    <span className="text-sm">Personalizing content for you...</span>
+                  </div>
+                ) : (
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p className="text-slate-600 leading-relaxed whitespace-pre-wrap">{learnContent}</p>
+                    <p className="text-[10px] text-slate-400 italic mt-4 pt-3 border-t border-slate-100">
+                      AI-generated for education — not a substitute for professional medical advice.
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <h3 className="text-base font-bold text-slate-800">Learn</h3>
+                {[
+                  { title: 'Avoiding Post-Meal Spikes', icon: TrendingUp, iconWrap: 'from-emerald-100 to-emerald-200', iconColor: 'text-emerald-600', teaser: 'Pair carbs with protein and walk 10 minutes after meals to blunt glucose excursions.' },
+                  { title: 'Smart Bolus Safety', icon: AlertTriangle, iconWrap: 'from-amber-100 to-amber-200', iconColor: 'text-amber-600', teaser: 'Always confirm carb counts before dosing. Use the safety cap and never exceed your correction factor.' },
+                  { title: 'Hypo Recognition', icon: BookOpen, iconWrap: 'from-sky-100 to-sky-200', iconColor: 'text-sky-600', teaser: 'Sweating, shaking, confusion, and hunger are early signs. Check glucose immediately and follow the 15-15 rule.' },
+                ].map(t => (
+                  <button key={t.title} onClick={() => openLearnTopic(t.title)} className="w-full text-left rounded-2xl border border-slate-200 p-4 bg-white shadow-sm hover:shadow-md transition-all duration-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className={`w-8 h-8 bg-gradient-to-br ${t.iconWrap} rounded-lg flex items-center justify-center`}>
+                        <t.icon size={16} className={t.iconColor} />
+                      </div>
+                      <p className="font-bold text-slate-900">{t.title}</p>
+                    </div>
+                    <p className="text-slate-600 leading-relaxed">{t.teaser}</p>
+                    <p className="text-[11px] font-semibold text-emerald-600 mt-2">Read personalized article →</p>
+                  </button>
+                ))}
+              </>
+            )}
           </div>
         )}
+
       </div>
 
       {/* Bottom Nav */}
-      <div className="bg-white/90 backdrop-blur-lg border-t border-slate-200 px-6 py-4 flex justify-between items-center absolute bottom-0 w-full z-20 pb-8">
-        <button onClick={() => setActiveTab('home')} className={`${activeTab === 'home' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <Heart size={24} className={activeTab === 'home' ? 'fill-current' : ''} />
-          <span className="text-[10px] font-medium">Home</span>
+      <div className="bg-white/95 backdrop-blur-xl border-t border-slate-200 px-4 py-3 flex justify-between items-center absolute bottom-0 w-full z-20 pb-6">
+        <button
+          onClick={() => setActiveTab('home')}
+          className={`${activeTab === 'home' ? 'text-emerald-600 border-emerald-500 bg-emerald-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}
+        >
+          <Heart size={22} className={activeTab === 'home' ? 'fill-current stroke-[2.5]' : ''} />
+          <span className="text-[10px] font-medium">Dashboard</span>
         </button>
-        <button onClick={() => setActiveTab('checkin')} className={`${activeTab === 'checkin' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <Activity size={24} />
+        <button
+          onClick={() => setActiveTab('checkin')}
+          className={`${activeTab === 'checkin' ? 'text-emerald-600 border-emerald-500 bg-emerald-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}
+        >
+          <Activity size={22} className={activeTab === 'checkin' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Check-in</span>
         </button>
-        <button onClick={() => setActiveTab('food')} className={`${activeTab === 'food' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <Utensils size={24} />
+        <button
+          onClick={() => setActiveTab('food')}
+          className={`${activeTab === 'food' ? 'text-emerald-600 border-emerald-500 bg-emerald-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}
+        >
+          <Utensils size={22} className={activeTab === 'food' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Log</span>
         </button>
-        <button onClick={() => setActiveTab('learn')} className={`${activeTab === 'learn' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <BookOpen size={24} />
+        <button
+          onClick={() => setActiveTab('learn')}
+          className={`${activeTab === 'learn' ? 'text-emerald-600 border-emerald-500 bg-emerald-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}
+        >
+          <BookOpen size={22} className={activeTab === 'learn' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Learn</span>
         </button>
-        <button onClick={() => setActiveTab('chat')} className={`${activeTab === 'chat' ? 'text-teal-600' : 'text-slate-400 hover:text-slate-600'} flex flex-col items-center gap-1 transition-colors`}>
-          <MessageSquare size={24} />
+        <button
+          onClick={() => setActiveTab('chat')}
+          className={`${activeTab === 'chat' ? 'text-emerald-600 border-emerald-500 bg-emerald-50 shadow-sm' : 'text-slate-400 hover:text-slate-600 border-transparent hover:border-slate-200'} flex flex-col items-center gap-1 transition-all duration-200 px-3 py-2 rounded-xl border-2`}
+        >
+          <MessageSquare size={22} className={activeTab === 'chat' ? 'stroke-[2.5]' : ''} />
           <span className="text-[10px] font-medium">Care</span>
         </button>
       </div>

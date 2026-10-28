@@ -1,6 +1,8 @@
 export enum UserRole {
   PATIENT = 'PATIENT',
-  PROVIDER = 'PROVIDER'
+  PROVIDER = 'PROVIDER',
+  OVERVIEW = 'OVERVIEW',
+  MANAGER = 'MANAGER'
 }
 
 export enum GlucoseContext {

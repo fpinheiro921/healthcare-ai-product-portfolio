@@ -39,9 +39,9 @@ export const MealPredictor: React.FC<MealPredictorProps> = ({ currentGlucose, on
 
     // ... (rest of the logic remains same until data calculation) ...
 
-    // Mock Patient Profile
+    // Mock Patient Profile — glucose reflects the live latest reading
     const patientProfile = {
-        Glucose: 145,
+        Glucose: currentGlucose,
         BMI: 28.5,
         Age: 42
     };
@@ -59,7 +59,7 @@ export const MealPredictor: React.FC<MealPredictorProps> = ({ currentGlucose, on
 
         // Sigmoid to get probability (0-1) representing resistance level
         return 1 / (1 + Math.exp(-logit));
-    }, []);
+    }, [currentGlucose]);
 
     // Generate Prediction Curve
     const data = useMemo(() => {
@@ -91,7 +91,7 @@ export const MealPredictor: React.FC<MealPredictorProps> = ({ currentGlucose, on
             let value = baseline + absorption - (insulin > 0 ? insulinAction : 0);
 
             // Add some noise/realism
-            value = Math.max(50, value); // Don't go below 50
+            value = Math.max(40, value); // Floor matches chart domain so predicted lows stay visible
 
             points.push({
                 time: t,
@@ -184,7 +184,7 @@ export const MealPredictor: React.FC<MealPredictorProps> = ({ currentGlucose, on
                             {isHigh ? <AlertCircle size={16} /> : isLow ? <AlertCircle size={16} /> : <TrendingUp size={16} />}
                         </div>
                         <p className="text-xs text-slate-700 leading-tight font-medium">
-                            {isHigh ? `Spike predicted. Try ${Math.round(insulin + (peakGlucose - 150) / 40)}u insulin.` :
+                            {isHigh ? `Spike predicted. Try ${Math.max(0, Math.round(insulin + (peakGlucose - 150) / 40))}u insulin.` :
                                 isLow ? `Hypo risk! Reduce insulin.` :
                                     `Good control.`}
                         </p>

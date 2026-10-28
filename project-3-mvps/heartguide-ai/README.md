@@ -12,6 +12,12 @@ HeartGuide AI is a full-stack healthcare application demonstrating the intersect
 
 **Production**: [https://heartguide-iwtbmeqb3-franciscos-projects-73f8717a.vercel.app](https://heartguide-iwtbmeqb3-franciscos-projects-73f8717a.vercel.app)
 
+## 📄 Clinical Documentation
+> **Medical Logic Verified**: This application implements **ACC 2024 Guidelines** for Heart Failure RPM, utilizing "Triangulation Logic" (Weight + Symptoms) to predict readmission risks.
+>
+> 👉 [**View Full Product Requirements (PRD)**](../../project-2-prd/HeartGuide-AI-PRD.md)
+
+
 ## ✨ Key Features
 
 ### 1. **Dual-View Architecture**

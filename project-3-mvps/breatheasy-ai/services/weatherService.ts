@@ -1,17 +1,53 @@
 import { WeatherData } from '../types';
 
+// Pollen grains/m3 to a Low/Medium/High label, with the dominant species named
+function pollenSummary(current: any): string {
+    if (!current) return 'Low';
+    const species: Array<[string, number | undefined]> = [
+        ['Grass', current.grass_pollen],
+        ['Ragweed', current.ragweed_pollen],
+        ['Birch', current.birch_pollen],
+        ['Alder', current.alder_pollen],
+        ['Olive', current.olive_pollen],
+        ['Mugwort', current.mugwort_pollen],
+    ];
+    const valid = species.filter(([, v]) => typeof v === 'number' && v > 0) as Array<[string, number]>;
+    if (valid.length === 0) return 'Low';
+    const [name, value] = valid.reduce((a, b) => (b[1] > a[1] ? b : a));
+    const level = value >= 200 ? 'High' : value >= 20 ? 'Medium' : 'Low';
+    return `${level} (${name})`;
+}
+
 export const fetchWeather = async (latitude: number, longitude: number): Promise<WeatherData> => {
     try {
-        const response = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,is_day,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph`
-        );
+        const [weatherRes, airRes] = await Promise.all([
+            fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,is_day,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph`
+            ),
+            fetch(
+                `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&current=us_aqi,pm2_5,grass_pollen,ragweed_pollen,birch_pollen,alder_pollen,olive_pollen,mugwort_pollen`
+            ).catch(() => null),
+        ]);
 
-        if (!response.ok) {
+        if (!weatherRes.ok) {
             throw new Error('Weather data fetch failed');
         }
 
-        const data = await response.json();
+        const data = await weatherRes.json();
         const current = data.current;
+
+        let aqi = 45;
+        let pm25 = 12;
+        let pollen = 'Low';
+        if (airRes?.ok) {
+            const aqData = await airRes.json().catch(() => null);
+            const aq = aqData?.current;
+            if (aq) {
+                if (typeof aq.us_aqi === 'number') aqi = aq.us_aqi;
+                if (typeof aq.pm2_5 === 'number') pm25 = Math.round(aq.pm2_5 * 10) / 10;
+                pollen = pollenSummary(aq);
+            }
+        }
 
         return {
             temperature: current.temperature_2m,
@@ -19,9 +55,9 @@ export const fetchWeather = async (latitude: number, longitude: number): Promise
             windSpeed: current.wind_speed_10m,
             weatherCode: current.weather_code,
             isDay: current.is_day === 1,
-            aqi: 45, // Fallback safe AQI
-            pm25: 12, // Mocked
-            pollen: 'Low', // Fallback
+            aqi,
+            pm25,
+            pollen,
             condition: getWeatherDescription(current.weather_code)
         };
     } catch (error) {
@@ -35,7 +71,7 @@ export const fetchWeather = async (latitude: number, longitude: number): Promise
             isDay: true,
             aqi: 50,
             pm25: 15,
-            pollen: 'Moderate',
+            pollen: 'Medium',
             condition: 'Sunny'
         };
     }

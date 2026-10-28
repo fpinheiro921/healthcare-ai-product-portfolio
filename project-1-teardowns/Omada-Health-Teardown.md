@@ -9,11 +9,11 @@
 
 ## 1. Executive Summary
 
-Omada Health pioneered the "Digital Therapeutics" category by digitizing the Diabetes Prevention Program (DPP). Their model—**Connected Scale + Human Coach + Peer Group**—set the standard for behavior change.
+Omada Health, effectively the "Incumbent" of Digital Health, cemented its status with a **2025 IPO**. Their model—**Connected Scale + Human Coach + Peer Group**—set the standard for behavior change, but they now face the "Innovator's Dilemma."
 
-*   **The Moat**: A "Virtual First" provider status with major payers (Cigna, Express Scripts).
-*   **The Stats**: Validated savings of **$1,338 per participant** and sustained weight loss at 2 years.
-*   **The Threat**: The rise of **GLP-1 agonists (Wegovy/Zepbound)** challenges the core premise of "behavior-only" weight loss. Omada must evolve from a "Willpower Coach" to a "GLP-1 Companion."
+*   **The Moat**: "Virtual First" status with major payers and public market stability.
+*   **The Stats**: Validated savings of **$1,338 per participant**, but growth is challenged by the GLP-1 wave.
+*   **The Threat**: With **GLP-1 agonists (Wegovy/Zepbound)** solving appetite chemically, Omada's "willpower" coaching risks obsolescence. They must pivot from "Behavior Coach" to **"GLP-1 Companion."**
 
 ---
 

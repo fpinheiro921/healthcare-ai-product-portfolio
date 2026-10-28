@@ -9,11 +9,11 @@
 
 ## 1. Executive Summary
 
-Hello Heart conquered the employer market by removing the friction of blood pressure (BP) monitoring. Their "Trojan Horse" strategy—a free, cellular-connected monitor—solved the **data ingestion** problem.
+Hello Heart remains the dominant player in digital cardiac health by focusing on **frictionless data ingestion**. While competitors like Sword pivot to "Agentic AI," Hello Heart has doubled down on its simple, effective "Trojan Horse" strategy—the free cellular monitor.
 
 *   **The Win**: High engagement (70% retention) because it's effortless.
-*   **The Limit**: It remains a **reactive** monitoring tool. It tracks *outcomes* (BP) but lacks visibility into key *inputs* (Medication timing).
-*   **The Opportunity**: Move from "Digital Thermometer" to "Digital Pharmacist" using **Predictive Al**.
+*   **The Limit**: Compared to Sword's *Phoenix*, Hello Heart remains a **reactive** monitoring tool. It logs *outcomes* (BP) but lacks the agentic capability to optimize *inputs* (Medication timing).
+*   **The Opportunity**: Move from "Digital Thermometer" to **"Digital Pharmacist"** using Predictive AI.
 
 ---
 

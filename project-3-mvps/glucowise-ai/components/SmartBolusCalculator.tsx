@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Syringe, Settings, AlertTriangle, ChevronDown, ChevronUp, Info, Calculator } from 'lucide-react';
+import { Syringe, Settings, AlertTriangle, ChevronDown, ChevronUp, Info, Calculator, Check } from 'lucide-react';
 
 interface SmartBolusProps {
     currentGlucose: number;
@@ -7,11 +7,12 @@ interface SmartBolusProps {
 }
 
 const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealCarbs }) => {
-    // Clinical Settings (Default typical Type 1 values)
+    // Clinical Settings (Default typical Type 2 on insulin values)
     const [icr, setIcr] = useState(10); // Insulin-to-Carb Ratio (1 unit per 10g)
     const [isf, setIsf] = useState(50); // Insulin Sensitivity Factor (1 unit drops 50 mg/dL)
     const [targetBg, setTargetBg] = useState(100); // Target Glucose (mg/dL)
-    const [iob, setIob] = useState(0); // Insulin On Board (Active Insulin) - Mock for now
+    const [iob, setIob] = useState(0); // Insulin On Board (Active Insulin)
+    const [doseLogged, setDoseLogged] = useState(false);
 
     // Inputs (Auto-filled but editable)
     const [inputCarbs, setInputCarbs] = useState(mealCarbs);
@@ -30,14 +31,21 @@ const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealC
         setInputBg(currentGlucose);
     }, [currentGlucose]);
 
+    // A new recommendation invalidates a previously logged dose
+    useEffect(() => {
+        setDoseLogged(false);
+    }, [inputCarbs, inputBg, iob, icr, isf, targetBg]);
+
     // Calculation Logic
     const calculateDose = () => {
+        const safeIcr = icr > 0 ? icr : 1;
+        const safeIsf = isf > 0 ? isf : 1;
         // 1. Carb Bolus: Carbs / ICR
-        const carbBolus = inputCarbs / icr;
+        const carbBolus = inputCarbs / safeIcr;
 
         // 2. Correction Bolus: (Current BG - Target) / ISF
         // Only correct if BG is above target (typically) or subtract if below
-        const correctionBolus = (inputBg - targetBg) / isf;
+        const correctionBolus = (inputBg - targetBg) / safeIsf;
 
         // 3. Total Formula
         // Total = Carb Bolus + Correction Bolus - IOB
@@ -47,8 +55,8 @@ const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealC
     };
 
     const recommendedDose = calculateDose();
-    const carbPart = inputCarbs / icr;
-    const correctionPart = (inputBg - targetBg) / isf;
+    const carbPart = inputCarbs / (icr > 0 ? icr : 1);
+    const correctionPart = (inputBg - targetBg) / (isf > 0 ? isf : 1);
 
     // Safety Checks
     const isHighDose = recommendedDose > 10;
@@ -87,8 +95,9 @@ const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealC
                                 <label className="text-[10px] text-slate-500 font-semibold mb-1 block">ICR (1:g)</label>
                                 <input
                                     type="number"
+                                    min="1"
                                     value={icr}
-                                    onChange={(e) => setIcr(Number(e.target.value))}
+                                    onChange={(e) => setIcr(Math.max(1, Number(e.target.value)))}
                                     className="w-full bg-white border border-slate-200 rounded-lg py-1.5 px-2 text-sm font-bold text-slate-700 text-center focus:ring-2 focus:ring-teal-500 outline-none"
                                 />
                             </div>
@@ -96,8 +105,9 @@ const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealC
                                 <label className="text-[10px] text-slate-500 font-semibold mb-1 block">ISF (mg/dL)</label>
                                 <input
                                     type="number"
+                                    min="1"
                                     value={isf}
-                                    onChange={(e) => setIsf(Number(e.target.value))}
+                                    onChange={(e) => setIsf(Math.max(1, Number(e.target.value)))}
                                     className="w-full bg-white border border-slate-200 rounded-lg py-1.5 px-2 text-sm font-bold text-slate-700 text-center focus:ring-2 focus:ring-teal-500 outline-none"
                                 />
                             </div>
@@ -107,6 +117,16 @@ const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealC
                                     type="number"
                                     value={targetBg}
                                     onChange={(e) => setTargetBg(Number(e.target.value))}
+                                    className="w-full bg-white border border-slate-200 rounded-lg py-1.5 px-2 text-sm font-bold text-slate-700 text-center focus:ring-2 focus:ring-teal-500 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-[10px] text-slate-500 font-semibold mb-1 block">IOB (units)</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={iob}
+                                    onChange={(e) => setIob(Math.max(0, Number(e.target.value)))}
                                     className="w-full bg-white border border-slate-200 rounded-lg py-1.5 px-2 text-sm font-bold text-slate-700 text-center focus:ring-2 focus:ring-teal-500 outline-none"
                                 />
                             </div>
@@ -202,9 +222,13 @@ const SmartBolusCalculator: React.FC<SmartBolusProps> = ({ currentGlucose, mealC
 
                 {/* Footer Action */}
                 {!isHypoRisk && (
-                    <button className="w-full mt-4 bg-teal-600 hover:bg-teal-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-teal-900/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                        <Syringe className="w-5 h-5" />
-                        Log Dose
+                    <button
+                        onClick={() => setDoseLogged(true)}
+                        disabled={doseLogged || recommendedDose <= 0}
+                        className={`w-full mt-4 font-bold py-3.5 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${doseLogged ? 'bg-emerald-500 text-white shadow-emerald-900/10 cursor-default' : 'bg-teal-600 hover:bg-teal-500 text-white shadow-teal-900/10 disabled:opacity-40 disabled:cursor-not-allowed'}`}
+                    >
+                        {doseLogged ? <Check className="w-5 h-5" /> : <Syringe className="w-5 h-5" />}
+                        {doseLogged ? 'Dose Logged' : 'Log Dose'}
                     </button>
                 )}
             </div>

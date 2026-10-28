@@ -17,16 +17,15 @@ export interface SkillCategory {
 }
 
 export const resumeData = {
-    bio: "I have the privilege of using my talent to bring people back to life. I treat product development with the same urgency as a code blue. My work is not about 'users'; it's about patients waiting on the other side.",
     experience: [
         {
             role: "Internal Medicine Resident",
             company: "ULS Braga",
             period: "2024 - Present",
             achievements: [
-                "Redesigned digital workflows, improving care coordination by 25%",
-                "Identified that 70% of chronic disease follow-ups are routine guideline implementations (ideal for AI automation)",
-                "Collaborated with clinicians and administrators to translate clinical inefficiencies into actionable product features"
+                "Provide comprehensive patient care across internal medicine, managing complex cases requiring diagnostic reasoning and evidence-based treatment protocols",
+                "Identify clinical workflow inefficiencies and design digital solutions to improve care delivery at scale",
+                "Collaborate with multidisciplinary teams (specialists, nurses, administration) — managing stakeholder needs across clinical and operational functions"
             ]
         },
         {
@@ -34,7 +33,7 @@ export const resumeData = {
             company: "Centro Hospitalar de Leiria",
             period: "2023",
             achievements: [
-                "Rotations: Internal Medicine (4mo), General Surgery (3mo), Pediatrics (2mo), Primary Care (3mo)",
+                "Completed internship year with rotations across Internal Medicine, General Surgery, Pediatrics, and Primary Care",
                 "Cross-functional care delivery across multiple specialties in high-volume clinical settings"
             ]
         },
@@ -43,8 +42,8 @@ export const resumeData = {
             company: "Stem Cell Bioengineering Lab (IBB/IST)",
             period: "2015",
             achievements: [
-                "Conducted research on cardiac regenerative therapies using mesenchymal stem cells",
-                "Applied quantitative modeling and data analysis to evaluate therapeutic efficacy"
+                "Conducted research on cardiac regenerative therapies: 'Evaluation of the cardiac regenerative potential of mesenchymal stem/stromal cells from different human sources'",
+                "Isolated and expanded bone marrow-derived MSCs from Acute Myocardial Infarction patients, studying expansion potential and potency across different sources"
             ]
         }
     ],
@@ -56,37 +55,42 @@ export const resumeData = {
         },
         {
             degree: "MSc Biomedical Engineering",
-            institution: "Instituto Superior Técnico / TU Delft",
+            institution: "Instituto Superior Técnico, Lisbon",
             period: "2010 - 2015"
+        },
+        {
+            degree: "Erasmus Exchange (Cell Systems Engineering)",
+            institution: "TU Delft",
+            period: "2014 - 2015"
         }
     ],
     certifications: [
         {
             name: "Medical License",
             issuer: "Ordem dos Médicos (Portugal)",
-            date: "July 2022"
+            date: "2022"
         },
         {
-            name: "CAE (C1 Advanced)",
+            name: "Certificate in Advanced English (CAE)",
             issuer: "Cambridge Assessment English",
-            date: "2008"
+            date: "Certified"
         }
     ],
     skills: {
         clinical: [
             "Internal Medicine",
+            "Patient Management",
             "Diagnostic Reasoning",
-            "Evidence-Based Medicine",
-            "Clinical Operations"
+            "Evidence-Based Practice"
         ],
         digital: [
-            "AI Clinical Workflows",
-            "Product Design",
-            "Data Analysis",
-            "EHR Systems"
+            "AI Product Development",
+            "Healthcare Systems",
+            "Clinical Operations",
+            "Electronic Health Records"
         ],
         technical: [
-            "React", "TypeScript", "Python", "Next.js", "TensorFlow", "Tailwind CSS", "Gemini API", "scikit-learn"
+            "React", "TypeScript", "Python", "Next.js", "TensorFlow", "Tailwind CSS", "Gemini API", "Data Analysis"
         ]
     }
 };

@@ -43,7 +43,11 @@ export const EnvironmentalTrigger: React.FC<EnvironmentalTriggerProps> = ({ weat
             setAqi(weather.aqi);
             setHumidity(weather.humidity);
             setTemperature(weather.temperature);
-            setPollenLevel(weather.pollen);
+            // Pollen may arrive as "High (Grass)" — take the level token only
+            const level = (weather.pollen || 'Low').split(' ')[0];
+            const normalized: 'Low' | 'Medium' | 'High' =
+                level === 'High' ? 'High' : level === 'Medium' || level === 'Moderate' ? 'Medium' : 'Low';
+            setPollenLevel(normalized);
         }
     }, [weather]);
 
@@ -78,8 +82,8 @@ export const EnvironmentalTrigger: React.FC<EnvironmentalTriggerProps> = ({ weat
         const aqiFactor = Math.max(0, (aqi - 50) / 300); // 0 at 50, 1 at 350+
 
         // Pollen Impact
-        const pollenMap = { 'Low': 0, 'Medium': 0.3, 'High': 0.6 };
-        const pollenFactor = pollenMap[pollenLevel];
+        const pollenMap: Record<string, number> = { 'Low': 0, 'Medium': 0.3, 'High': 0.6, 'Moderate': 0.3 };
+        const pollenFactor = pollenMap[pollenLevel] ?? 0;
 
         // Weather Impact (High humidity/extreme temp adds risk)
         const humidityRisk = Math.abs(humidity - 45) / 100 * 0.5; // Optimal is 45%

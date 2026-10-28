@@ -27,7 +27,7 @@ const SwordManifesto: React.FC = () => {
                             <span className="text-slate-400">It is the difference between life and death.</span>
                         </h2>
                         <p className="text-xl text-slate-300 leading-relaxed border-l-4 border-red-500 pl-6 mb-8">
-                            "I have the privilege of using my talent to bring people back to life. But we cannot perform if we don't have the tools. My goal is to build the AI infrastructure that enables the SNS to deliver world-class results. Good is not good enough."
+                            "I have the privilege of using my talent to cure them. But we cannot perform if we don't have the tools. My goal is to build the AI infrastructure that enables the SNS to deliver world-class results. Good is not good enough."
                         </p>
 
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 rounded-lg border border-slate-700 text-slate-400 text-sm font-mono">

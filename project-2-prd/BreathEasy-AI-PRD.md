@@ -56,10 +56,26 @@ Asthma affects over 260 million people globally, yet management remains largely 
 - **Integrations**:
     - OpenWeatherMap API (Weather/Pollen).
     - IQAir API (Air Quality).
-- **AI Model**:
-    - **Type**: Random Forest Regressor.
-    - **Features**: Past 7-day PEF trend, Forecasted AQI, Humidity, Pollen Count.
-    - **Target**: Probability of PEF drop >20% in next 24h.
+### 5.1 The Lagged Risk Algorithm
+Standard apps correlate *current* AQI with *current* symptoms. BreathEasy uses a **Lagged Distributed Lag Model (DLNM)** logic to account for inflammation latency.
+
+*   **The Logic**:
+    *   *Observation*: High Ozone (O3) exposure on Day 0 often triggers attacks on Day 2 due to airway inflammation kinetics.
+    *   *The Model*: Risk(t) = $\alpha \cdot AQI(t) + \beta \cdot AQI(t-1) + \gamma \cdot AQI(t-2)$.
+    *   *Result*: We warn the patient *before* they feel tight.
+
+---
+
+## 6. Sword Ecosystem Fit: "Digital Pneumology"
+
+BreathEasy is designed to be Sword Health's **fourth vertical**, sitting alongside MSK (Move), Pelvic (Bloom), and Mental (Mind).
+
+| Feature | Sword MSK (Move) | Sword Respiratory (BreathEasy) |
+| :--- | :--- | :--- |
+| **Sensor** | IMU (Motion) | Spirometer + Air Monitor |
+| **Logic** | Biomechanical Correction | Environmental Prediction |
+| **Model** | "Fix the movement" | "Dodge the trigger" |
+| **value** | Avoid Surgery ($$) | Avoid ER Visits ($$$) |
 
 ## 6. User Experience (UX)
 - **"Traffic Light" System**: Immediate visual feedback after every log.

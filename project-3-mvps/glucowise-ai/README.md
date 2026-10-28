@@ -12,6 +12,12 @@ GlucoWise AI is a comprehensive digital health solution designed to help patient
 
 **Production**: [https://glucowise-n8bumzr26-franciscos-projects-73f8717a.vercel.app](https://glucowise-n8bumzr26-franciscos-projects-73f8717a.vercel.app)
 
+## 📄 Clinical Documentation
+> **Medical Logic Verified**: This application implements the **Smart Bolus Logic** (Carbs/ICR + Correction) vs. Omada's coaching model.
+>
+> 👉 [**View Full Product Requirements (PRD)**](../../project-2-prd/GlucoWise-AI-PRD.md)
+
+
 ## 🏗️ Architecture
 **Safety First**: A physics-based metabolic engine validates all meal inputs before prediction.
 

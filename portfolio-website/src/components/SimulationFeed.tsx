@@ -29,37 +29,31 @@ interface Particle {
 
 const AGENT_SCENARIOS: Record<string, { signal: string, action: string, outcome: string }[]> = {
     'heartguide': [
-        { signal: "Patient #842: Weight gain +1.5kg (Fluid Retention)", action: "Diuretic dosage adjusted remotely via App", outcome: "Readmission Prevented" },
-        { signal: "Patient #391: Atrial Fibrillation Pattern Detected", action: "Cardiology Consult Auto-Scheduled (Priority 1)", outcome: "Stroke Risk Mitigated" },
-        { signal: "Patient #104: BP Spike (180/110) > 15mins", action: "Emergency Protocol Activated + Family Notified", outcome: "Hypertensive Crisis Managed" }
+        { signal: "Santa Maria ER: Patient #842 (HF Decomp) inbound", action: "HeartGuide: Diuretic titration sent 2h ago", outcome: "Admission Prevented" },
+        { signal: "H. Garcia de Orta: A-Fib Cluster Detected", action: "Cardiology Consult Auto-Scheduled", outcome: "Stroke Risk Mitigated" },
+        { signal: "USF Baixa: Hypertensive Crisis (180/110)", action: "Emergency Protocol Activated", outcome: "Managed at Home" }
     ],
-
-
     'breatheasy': [
-        { signal: "Env Alert: High Pollen Count in Zone 4", action: "Proactive 'Use Inhaler' Notification sent to 450 users", outcome: "Asthma Attacks Reduced -15%" },
-        { signal: "Patient #552: Wheezing Audio Signature Detected", action: "Rescue Medication Advised Immediateley", outcome: "ER Visit Avoided" }
+        { signal: "Lisbon (Alcântara): Pollen Spike (Birch)", action: "Proactive Alert sent to 450 users", outcome: "Pediatric ER Visits -15%" },
+        { signal: "Patient #552: Wheezing Audio Signature", action: "Rescue Meds Advised", outcome: "Amadora-Sintra Avoided" }
     ],
     'glucowise': [
-        { signal: "Patient #991: Predicted Hypoglycemia in 45m", action: "Notification: 'Consume 15g fast-acting carbs'", outcome: "Severe Event Averted" },
-        { signal: "Patient #223: Post-Prandial Spike Predicted", action: "Pre-meal Bolus Adjustment Recommended", outcome: "Time-in-Range Maintained" }
-    ],
-    'sepsis-sentinel': [
-        { signal: "Ward 4, Bed 12: SIRS Criteria (HR>90, Temp>38)", action: "Sepsis Bundle Initiated (Time Zero Protocol)", outcome: "Mortality Risk Reduced 40%" },
-        { signal: "Lab Values: Lactate > 2.0 mmol/L", action: "ICU Team Escalation Triggered", outcome: "Est. Cost Savings: €12k" }
+        { signal: "Patient #991 (T2DM): Hypo predicted <45m", action: "Alert: 'Consume 15g Fast Carbs'", outcome: "INEM Call Averted" },
+        { signal: "São João: Post-Prandial Spike Predicted", action: "Bolus Adjustment Recommended", outcome: "Time-in-Range Safe" }
     ],
     'surge-commander': [
-        { signal: "ER Capacity Projection: >90% in 2 hours", action: "Divert Status: AMBER -> St. Mary's Hospital", outcome: "Gridlock Prevented" },
-        { signal: "Inflow Surge: +15 Ambulances inbound", action: "Staffing Agency Alert: +4 RNs Requested", outcome: "Nurse:Patient Ratio Safe" }
+        { signal: "H. Beatriz Ângelo: ER Saturation > 110%", action: "Divert Status: AMBER -> H. Loures", outcome: "Ambulance Offload <15m" },
+        { signal: "SNS24: Call Wait Time > 45m", action: "Overflow Bot Deployed (Triage AI)", outcome: "Wait Reduced to 2m" }
     ],
     'triage-os': [
-        { signal: "Caller #492: 'Chest Pain' + High Risk Profile", action: "Cat 1 Dispatch (Immediate Assistance)", outcome: "Time-to-Care: <8 mins" },
-        { signal: "Caller #115: 'Rash' (Low Acuity)", action: "Diverted to Video Consult", outcome: "ER Resource Preserved" }
+        { signal: "SNS24 Caller #492: 'Chest Pain'", action: "Cat 1 Dispatch (Via Verde Coronária)", outcome: "Time-to-Cath: <60m" },
+        { signal: "Caller #115: 'Rash' (Green)", action: "Diverted to Video Consult", outcome: "H. Curry Cabral Preserved" }
     ],
     'portersmart': [
-        { signal: "Transport Request: Bed 7 to Radiology", action: "Route Optimized (Nearest Porter Assigned)", outcome: "Wait Time: 2 mins (vs 15)" },
+        { signal: "São José: Transfer to Radiology Delayed", action: "Route Optimized (Porter #4 Assigned)", outcome: "Wait Time: 2 mins (vs 45)" },
     ],
     'default': [
-        { signal: "System Status Check", action: "Analyzing Population Health Trends", outcome: "Optimization Active" }
+        { signal: "System Status Check", action: "Analyzing ACSS / DGS Data Stream", outcome: "Optimization Active" }
     ]
 };
 
@@ -76,22 +70,18 @@ export const SimulationFeed: React.FC<SimulationFeedProps> = ({ activeAgents }) 
             if (isSystemStrained && roll > 0.3) {
                 // 70% chance of CHAOS log when system is strained
                 const chaosLogs = [
-                    { type: 'CRITICAL', title: 'ER Overcrowding', signal: 'WAIT > 6 HOURS', action: 'Patient Left w/o Care', outcome: 'Missed Diagnosis Risk' },
-                    { type: 'WARNING', title: 'Ward Capacity', signal: 'ZERO BEDS', action: 'Admission Blocked', outcome: 'ER Boarding Spike' },
-                    { type: 'CRITICAL', title: 'Primary Care', signal: 'NO APPTS', action: 'Patient Diverted', outcome: 'Unnecessary ER Visit' },
-                    { type: 'WARNING', title: 'Sepsis Alert', signal: 'MISSED SIGNAL', action: 'Delayed Response', outcome: 'ICU Transfer Req' }
+                    { type: 'CRITICAL', title: 'H. Santa Maria', signal: 'ER WAIT > 6 HOURS', action: 'Patient Abandonment', outcome: 'Safety Risk High' },
+                    { type: 'WARNING', title: 'H. Amadora-Sintra', signal: 'OBSTETRICS DIVERT', action: 'Transfer -> Mac Matern.', outcome: 'Ambulance Delay' },
+                    { type: 'CRITICAL', title: 'USF (Lisbon)', signal: 'NO GP SLOTS', action: 'Patient to ER (Green)', outcome: 'System Abuse' },
+                    { type: 'WARNING', title: 'SNS24 Center', signal: 'WAIT > 80 MINS', action: 'Call Abandoned', outcome: 'Triage Failed' },
+                    { type: 'CRITICAL', title: 'H. Garcia de Orta', signal: 'INTERNAL MED FULL', action: 'Corridor Boarding', outcome: 'Dignity Compromised' }
                 ];
                 const chaos = chaosLogs[Math.floor(Math.random() * chaosLogs.length)];
 
-
                 const newItem: FeedItem = {
                     id: Date.now().toString(),
-                    agentId: 'SYSTEM ALERT',
+                    agentId: 'CHAOS MONITOR',
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                    // icon: ShieldAlert, // Removed icon prop as it is not in FeedItem interface
-                    // color: 'text-rose-500', 
-                    // bgColor: 'bg-rose-900/20',
-                    // borderColor: 'border-rose-900',
                     type: 'alert',
                     details: {
                         signal: chaos.signal,

@@ -54,10 +54,30 @@ Heart Failure (HF) is a leading cause of hospital readmissions, with ~25% of pat
 ## 5. Technical Specifications
 - **Frontend**: React Native (Patient App), React + Tailwind CSS (Provider Dashboard).
 - **Backend**: Node.js / Python (FastAPI).
-- **AI Engine**:
-    - **Model**: XGBoost Classifier trained on MIMIC-III and proprietary pilot data.
-    - **Features**: $\Delta$Weight (3-day), Dyspnea Score, Fatigue Score, Medication Adherence, BNP levels (if available).
-    - **Explainability**: SHAP values to show *why* a patient is high risk (e.g., "+3 lbs weight gain").
+### 5.1 The Decompensation Models
+HeartGuide's logic aligns with **ACC 2024 Guidelines** on Remote Patient Management, specifically focusing on "multiparametric monitoring."
+
+#### A. The "Triangulation" Logic
+We avoid false alarms by demanding concordance between **Objective** (Weight) and **Subjective** (Symptom) data.
+*   **Rule 1 (The Safety Net)**: $\Delta$Weight > 3.0 lbs in 24h $\rightarrow$ **CRITICAL ALERT** (Regardless of symptoms).
+*   **Rule 2 (The AI Suspicion)**: 
+    *   IF $\Delta$Weight > 1.5 lbs AND Dyspnea Score > Baseline + 2
+    *   THEN Risk = HIGH (Predictive of readmission).
+
+#### B. Explainability (SHAP Values)
+To gain provider trust, every alert includes a specific clinical reason:
+*   *"Risk Score: 85% (Critical)"*
+*   *Why?*: "Rapid Weight Gain (+3.2 lbs) + Worsening Orthopnea."
+
+---
+
+## 6. Market Differentiation: HeartGuide vs. Hello Heart
+
+| Feature | Hello Heart (The Monitor) | HeartGuide AI (The Manager) |
+| :--- | :--- | :--- |
+| **Logic** | **Reactive**: Alerts *after* BP is high. | **Predictive**: Alerts *before* fluid overload becomes critical. |
+| **Data Source** | **Single (BP)**: Limited view of physiology. | **Triangulated (Weight + Symptoms + BP)**: Full hemodynamic picture. |
+| **User Role** | **Passive Logger**: "Just check your numbers." | **Active Partner**: "Confirm you took your Lasix." |
 
 ## 6. User Experience (UX)
 - **Patient App**: "Morning Routine" flow. App opens directly to the check-in screen. No navigation required for primary task.
